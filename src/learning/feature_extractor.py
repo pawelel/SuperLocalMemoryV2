@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
-SuperLocalMemory V2 - Feature Extractor (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
-"""
-FeatureExtractor — Extracts 12-dimensional feature vectors for candidate memories.
+FeatureExtractor — Extracts 20-dimensional feature vectors for candidate memories.
 
 Each memory retrieved during recall gets a feature vector that feeds into
 the AdaptiveRanker. In Phase 1 (rule-based), features drive boosting weights.
 In Phase 2 (ML), features become LightGBM input columns.
 
-Feature Vector (12 dimensions):
-    [0]  bm25_score          — Existing retrieval score from search results
-    [1]  tfidf_score         — TF-IDF cosine similarity from search results
-    [2]  tech_match          — Does memory match user's tech preferences?
-    [3]  project_match       — Is memory from the current project?
-    [4]  workflow_fit        — Does memory fit current workflow phase?
-    [5]  source_quality      — Quality score of the source that created this memory
-    [6]  importance_norm     — Normalized importance (importance / 10.0)
-    [7]  recency_score       — Exponential decay based on age (180-day half-life)
-    [8]  access_frequency    — How often this memory was accessed (capped at 1.0)
-    [9]  pattern_confidence  — Max Beta-Binomial confidence from learned patterns
-    [10] signal_count        — Number of feedback signals for this memory (v2.7.4)
-    [11] avg_signal_value    — Average signal value for this memory (v2.7.4)
+Feature Vector (20 dimensions):
+    [0]  bm25_score              — Existing retrieval score from search results
+    [1]  tfidf_score             — TF-IDF cosine similarity from search results
+    [2]  tech_match              — Does memory match user's tech preferences?
+    [3]  project_match           — Is memory from the current project?
+    [4]  workflow_fit            — Does memory fit current workflow phase?
+    [5]  source_quality          — Quality score of the source that created this memory
+    [6]  importance_norm         — Normalized importance (importance / 10.0)
+    [7]  recency_score           — Exponential decay based on age (180-day half-life)
+    [8]  access_frequency        — How often this memory was accessed (capped at 1.0)
+    [9]  pattern_confidence      — Max Beta-Binomial confidence from learned patterns
+    [10] signal_count            — Number of feedback signals for this memory (v2.7.4)
+    [11] avg_signal_value        — Average signal value for this memory (v2.7.4)
+    [12] lifecycle_state         — Encoded lifecycle state (v2.8)
+    [13] outcome_success_rate    — Success rate from behavioral outcomes (v2.8)
+    [14] outcome_count           — Number of outcomes recorded (v2.8)
+    [15] behavioral_match        — Match against known success patterns (v2.8)
+    [16] cross_project_score     — Cross-project transfer confidence (v2.8)
+    [17] retention_priority      — Retention policy priority (v2.8)
+    [18] trust_at_creation       — Trust score of creator agent (v2.8)
+    [19] lifecycle_aware_decay   — Modified recency decay with lifecycle (v2.8)
 
 Design Principles:
     - All features normalized to [0.0, 1.0] range for ML compatibility
@@ -40,6 +38,7 @@ Design Principles:
     - Thread-safe: no shared mutable state after set_context()
 
 v2.7.4: Expanded from 10 to 12 features. Auto-retrain triggered on mismatch.
+v2.8.0: Expanded from 12 to 20 features. Lifecycle, behavioral, compliance dimensions.
 """
 
 import logging
@@ -67,6 +66,14 @@ FEATURE_NAMES = [
     'pattern_confidence',  # 9: Max Beta-Binomial confidence from learned patterns
     'signal_count',        # 10: Number of feedback signals for this memory (v2.7.4)
     'avg_signal_value',    # 11: Average signal value for this memory (v2.7.4)
+    'lifecycle_state',          # 12: Encoded lifecycle state (v2.8)
+    'outcome_success_rate',     # 13: Success rate from behavioral outcomes (v2.8)
+    'outcome_count',            # 14: Number of outcomes recorded (v2.8)
+    'behavioral_match',         # 15: Match against known success patterns (v2.8)
+    'cross_project_score',      # 16: Cross-project transfer confidence (v2.8)
+    'retention_priority',       # 17: Retention policy priority (v2.8)
+    'trust_at_creation',        # 18: Trust score of creator agent (v2.8)
+    'lifecycle_aware_decay',    # 19: Modified recency decay with lifecycle (v2.8)
 ]
 
 NUM_FEATURES = len(FEATURE_NAMES)
@@ -108,7 +115,7 @@ _MAX_ACCESS_COUNT = 10
 
 class FeatureExtractor:
     """
-    Extracts 12-dimensional feature vectors for candidate memories.
+    Extracts 20-dimensional feature vectors for candidate memories.
 
     Usage:
         extractor = FeatureExtractor()
@@ -120,7 +127,7 @@ class FeatureExtractor:
             signal_stats={'42': {'count': 5, 'avg_value': 0.8}},
         )
         features = extractor.extract_batch(memories, query="search optimization")
-        # features is List[List[float]], shape (n_memories, 12)
+        # features is List[List[float]], shape (n_memories, 20)
     """
 
     FEATURE_NAMES = FEATURE_NAMES
@@ -194,30 +201,42 @@ class FeatureExtractor:
 
     def extract_features(self, memory: dict, query: str) -> List[float]:
         """
-        Extract 12-dimensional feature vector for a single memory.
+        Extract 20-dimensional feature vector for a single memory.
 
         Args:
             memory: Memory dict from search results. Expected keys:
                     id, content, score, match_type, importance, created_at,
                     access_count, project_name, tags, created_by (optional).
+                    v2.8 optional keys: lifecycle_state, outcome_success_rate,
+                    outcome_count, behavioral_match, cross_project_score,
+                    retention_priority, trust_at_creation.
             query: The recall query string.
 
         Returns:
-            List of 12 floats in [0.0, 1.0] range, one per feature.
+            List of 20 floats in [0.0, 1.0] range, one per feature.
         """
         return [
-            self._compute_bm25_score(memory),
-            self._compute_tfidf_score(memory),
-            self._compute_tech_match(memory),
-            self._compute_project_match(memory),
-            self._compute_workflow_fit(memory),
-            self._compute_source_quality(memory),
-            self._compute_importance_norm(memory),
-            self._compute_recency_score(memory),
-            self._compute_access_frequency(memory),
-            self._compute_pattern_confidence(memory),
-            self._compute_signal_count(memory),
-            self._compute_avg_signal_value(memory),
+            self._compute_bm25_score(memory),         # 0
+            self._compute_tfidf_score(memory),         # 1
+            self._compute_tech_match(memory),          # 2
+            self._compute_project_match(memory),       # 3
+            self._compute_workflow_fit(memory),        # 4
+            self._compute_source_quality(memory),      # 5
+            self._compute_importance_norm(memory),     # 6
+            self._compute_recency_score(memory),       # 7
+            self._compute_access_frequency(memory),    # 8
+            self._compute_pattern_confidence(memory),  # 9
+            self._compute_signal_count(memory),        # 10
+            self._compute_avg_signal_value(memory),    # 11
+            # v2.8 features: lifecycle, behavioral, compliance
+            self._compute_lifecycle_state(memory),          # 12
+            self._compute_outcome_success_rate(memory),     # 13
+            self._compute_outcome_count(memory),            # 14
+            self._compute_behavioral_match(memory),         # 15
+            self._compute_cross_project_score(memory),      # 16
+            self._compute_retention_priority(memory),       # 17
+            self._compute_trust_at_creation(memory),        # 18
+            self._compute_lifecycle_aware_decay(memory),    # 19
         ]
 
     def extract_batch(
@@ -233,7 +252,7 @@ class FeatureExtractor:
             query: The recall query string.
 
         Returns:
-            List of feature vectors (List[List[float]]), shape (n, 12).
+            List of feature vectors (List[List[float]]), shape (n, 20).
             Returns empty list if memories is empty.
         """
         if not memories:
@@ -560,6 +579,119 @@ class FeatureExtractor:
                     max_confidence = max(max_confidence, confidence)
 
         return max(0.0, min(max_confidence, 1.0))
+
+    # ========================================================================
+    # v2.8 Feature Computations: Lifecycle, Behavioral, Compliance
+    # ========================================================================
+
+    def _compute_lifecycle_state(self, memory: dict) -> float:
+        """
+        Encode lifecycle state as numeric value.
+
+        State mapping:
+            active     = 1.0 (fully available, highest priority)
+            warm       = 0.7 (less frequently accessed, still relevant)
+            cold       = 0.4 (rarely accessed, compressed)
+            archived   = 0.1 (long-term storage, minimal priority)
+            tombstoned = 0.0 (pending deletion)
+
+        Default: 'active' (1.0) — backward compatible with pre-v2.8 memories
+        that have no lifecycle_state field.
+        """
+        state_map = {
+            'active': 1.0,
+            'warm': 0.7,
+            'cold': 0.4,
+            'archived': 0.1,
+            'tombstoned': 0.0,
+        }
+        return state_map.get(memory.get('lifecycle_state', 'active'), 1.0)
+
+    def _compute_outcome_success_rate(self, memory: dict) -> float:
+        """
+        Success rate from behavioral outcomes.
+
+        Reads directly from the memory dict — the behavioral engine
+        enriches memories with this field during recall.
+
+        Default: 0.5 (neutral — no outcome data available).
+        """
+        return float(memory.get('outcome_success_rate', 0.5))
+
+    def _compute_outcome_count(self, memory: dict) -> float:
+        """
+        Number of outcomes recorded, normalized to [0.0, 1.0].
+
+        Capped at 20 outcomes (count / 20.0). Memories with more
+        behavioral observations are better calibrated.
+
+        Default: 0 outcomes (returns 0.0).
+        """
+        count = memory.get('outcome_count', 0)
+        try:
+            count = int(count)
+        except (ValueError, TypeError):
+            count = 0
+        return min(count / 20.0, 1.0)
+
+    def _compute_behavioral_match(self, memory: dict) -> float:
+        """
+        How well this memory matches known success patterns.
+
+        The behavioral engine computes this by comparing the memory's
+        characteristics against patterns extracted from successful outcomes.
+
+        Default: 0.0 (no behavioral match data available).
+        """
+        return float(memory.get('behavioral_match', 0.0))
+
+    def _compute_cross_project_score(self, memory: dict) -> float:
+        """
+        Cross-project transfer confidence.
+
+        Measures how likely this memory's knowledge transfers successfully
+        across project boundaries (e.g., a Python pattern useful in any project).
+
+        Default: 0.0 (no cross-project data available).
+        """
+        return float(memory.get('cross_project_score', 0.0))
+
+    def _compute_retention_priority(self, memory: dict) -> float:
+        """
+        Retention policy priority.
+
+        1.0 = protected by retention policy (must not be deleted)
+        0.5 = default (no special retention rules)
+        0.0 = eligible for aggressive cleanup
+
+        Default: 0.5 (standard retention).
+        """
+        return float(memory.get('retention_priority', 0.5))
+
+    def _compute_trust_at_creation(self, memory: dict) -> float:
+        """
+        Trust score of the agent that created this memory.
+
+        Human-created memories default to 0.8 (high trust).
+        Agent-created memories can have lower trust until validated.
+
+        Default: 0.8 (assumes human creator for backward compatibility).
+        """
+        return float(memory.get('trust_at_creation', 0.8))
+
+    def _compute_lifecycle_aware_decay(self, memory: dict) -> float:
+        """
+        Modified recency decay that factors in lifecycle state.
+
+        Combines the standard exponential recency decay with the lifecycle
+        state encoding. This means archived memories decay faster than
+        active memories of the same age, creating a compound signal.
+
+        Formula: recency_score * lifecycle_state_value
+        """
+        recency = self._compute_recency_score(memory)
+        lifecycle = self._compute_lifecycle_state(memory)
+        return recency * lifecycle
 
 
 # ============================================================================

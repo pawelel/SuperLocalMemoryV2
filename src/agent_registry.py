@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Agent Registry
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 AgentRegistry — Tracks which AI agents connect to SuperLocalMemory,
 what they write, when, and via which protocol.
 
-Every MCP client (Claude, Cursor, Windsurf), CLI call, REST API request,
-and future A2A agent gets registered here. This powers:
+Every MCP client (Claude, Cursor, Windsurf), CLI call, and REST API request
+gets registered here. This powers:
     - Dashboard "Connected Agents" panel
     - Trust scoring input (v2.5 silent collection)
     - Provenance tracking (who created which memory)
@@ -31,7 +21,6 @@ Protocols:
     cli     — Command-line interface (slm command, bin/ scripts)
     rest    — REST API (api_server.py)
     python  — Direct Python import
-    a2a     — Agent-to-Agent Protocol (v2.7+)
 """
 
 import json
@@ -155,7 +144,7 @@ class AgentRegistry:
         Args:
             agent_id: Unique identifier (e.g., "mcp:claude-desktop")
             agent_name: Human-readable name (e.g., "Claude Desktop")
-            protocol: Connection protocol (mcp, cli, rest, python, a2a)
+            protocol: Connection protocol (mcp, cli, rest, python)
             metadata: Additional agent info (version, capabilities, etc.)
 
         Returns:
@@ -164,7 +153,7 @@ class AgentRegistry:
         if not agent_id or not isinstance(agent_id, str):
             raise ValueError("agent_id must be a non-empty string")
 
-        valid_protocols = ("mcp", "cli", "rest", "python", "a2a")
+        valid_protocols = ("mcp", "cli", "rest", "python")
         if protocol not in valid_protocols:
             raise ValueError(f"Invalid protocol: {protocol}. Must be one of {valid_protocols}")
 
@@ -283,7 +272,7 @@ class AgentRegistry:
         List registered agents with optional filtering.
 
         Args:
-            protocol: Filter by protocol (mcp, cli, rest, python, a2a)
+            protocol: Filter by protocol (mcp, cli, rest, python)
             limit: Max agents to return
             active_since_hours: Only agents seen within N hours
 

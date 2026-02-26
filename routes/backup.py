@@ -1,10 +1,10 @@
-"""
-SuperLocalMemory V2 - Backup Routes
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Backup Routes
+ — MIT License
 
 Routes: /api/backup/status, /api/backup/create, /api/backup/configure, /api/backup/list
 """
-
 from fastapi import APIRouter, HTTPException
 
 from .helpers import BackupConfigRequest

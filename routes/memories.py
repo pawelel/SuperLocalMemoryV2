@@ -1,10 +1,10 @@
-"""
-SuperLocalMemory V2 - Memory Routes
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Memory Routes
+ — MIT License
 
 Routes: /api/memories, /api/graph, /api/search, /api/clusters, /api/clusters/{id}
 """
-
 import json
 import os
 from typing import Optional

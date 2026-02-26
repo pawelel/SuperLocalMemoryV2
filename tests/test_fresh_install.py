@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Fresh Install Tests (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Fresh Install Tests (v2.7)
 
 Tests the complete fresh install experience for a non-technical user.
 Every test starts with EMPTY databases to verify that zero-data scenarios
@@ -11,7 +10,6 @@ are handled gracefully with no crashes. All tests use temporary paths.
 Run with:
     pytest tests/test_fresh_install.py -v
 """
-
 import json
 import sqlite3
 import sys

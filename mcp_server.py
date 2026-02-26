@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - MCP Server
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - MCP Server
 Universal memory access for all MCP-compatible tools (Cursor, Windsurf, Claude Desktop, Continue.dev)
-
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-Repository: https://github.com/varun369/SuperLocalMemoryV2
 
 IMPORTANT: This is an ADDITION to existing skills, not a replacement.
            Skills in Claude Code continue to work unchanged.
@@ -24,7 +21,6 @@ Usage:
     # Run as HTTP MCP server (for remote access)
     python3 mcp_server.py --transport http --port 8001
 """
-
 from mcp.server.fastmcp import FastMCP, Context
 from mcp.types import ToolAnnotations
 import sys
@@ -1350,6 +1346,79 @@ async def fetch(id: str) -> dict:
 
 
 # ============================================================================
+# v2.8 MCP TOOLS — Lifecycle, Behavioral Learning, Compliance
+# ============================================================================
+
+try:
+    from mcp_tools_v28 import (
+        report_outcome as _report_outcome,
+        get_lifecycle_status as _get_lifecycle_status,
+        set_retention_policy as _set_retention_policy,
+        compact_memories as _compact_memories,
+        get_behavioral_patterns as _get_behavioral_patterns,
+        audit_trail as _audit_trail,
+    )
+
+    V28_AVAILABLE = True
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False))
+    async def report_outcome(
+        memory_ids: list,
+        outcome: str,
+        action_type: str = "other",
+        context: str = None,
+        agent_id: str = "user",
+        project: str = None,
+    ) -> dict:
+        """Record action outcome for behavioral learning. Outcomes: success/failure/partial."""
+        return await _report_outcome(memory_ids, outcome, action_type, context, agent_id, project)
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False))
+    async def get_lifecycle_status(memory_id: int = None) -> dict:
+        """Get memory lifecycle status — state distribution or single memory state."""
+        return await _get_lifecycle_status(memory_id)
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False))
+    async def set_retention_policy(
+        name: str,
+        framework: str,
+        retention_days: int,
+        action: str = "retain",
+        applies_to_tags: list = None,
+        applies_to_project: str = None,
+    ) -> dict:
+        """Create a retention policy (GDPR, HIPAA, EU AI Act)."""
+        return await _set_retention_policy(
+            name, framework, retention_days, action, applies_to_tags, applies_to_project
+        )
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False))
+    async def compact_memories(dry_run: bool = True, profile: str = None) -> dict:
+        """Evaluate and compact stale memories through lifecycle transitions. dry_run=True by default."""
+        return await _compact_memories(dry_run, profile)
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False))
+    async def get_behavioral_patterns(
+        min_confidence: float = 0.0, project: str = None
+    ) -> dict:
+        """Get learned behavioral patterns from outcome analysis."""
+        return await _get_behavioral_patterns(min_confidence, project)
+
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False))
+    async def audit_trail(
+        event_type: str = None,
+        actor: str = None,
+        limit: int = 50,
+        verify_chain: bool = False,
+    ) -> dict:
+        """Query compliance audit trail with optional hash chain verification."""
+        return await _audit_trail(event_type, actor, limit, verify_chain)
+
+except ImportError:
+    V28_AVAILABLE = False  # v2.8 tools unavailable — graceful degradation
+
+
+# ============================================================================
 # MCP RESOURCES (Data endpoints)
 # ============================================================================
 
@@ -1586,6 +1655,13 @@ if __name__ == "__main__":
         print("  - memory_used(memory_id, query, usefulness)  [v2.7 Learning]", file=sys.stderr)
         print("  - get_learned_patterns(min_confidence, category) [v2.7 Learning]", file=sys.stderr)
         print("  - correct_pattern(pattern_id, correct_value) [v2.7 Learning]", file=sys.stderr)
+    if V28_AVAILABLE:
+        print("  - report_outcome(memory_ids, outcome)         [v2.8 Behavioral]", file=sys.stderr)
+        print("  - get_lifecycle_status(memory_id)              [v2.8 Lifecycle]", file=sys.stderr)
+        print("  - set_retention_policy(name, framework, days)  [v2.8 Compliance]", file=sys.stderr)
+        print("  - compact_memories(dry_run)                    [v2.8 Lifecycle]", file=sys.stderr)
+        print("  - get_behavioral_patterns(min_confidence)      [v2.8 Behavioral]", file=sys.stderr)
+        print("  - audit_trail(event_type, verify_chain)        [v2.8 Compliance]", file=sys.stderr)
     print("", file=sys.stderr)
     print("MCP Resources Available:", file=sys.stderr)
     print("  - memory://recent/{limit}", file=sys.stderr)

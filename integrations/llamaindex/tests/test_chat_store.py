@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LlamaIndex Chat Store Tests
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LlamaIndex Chat Store Tests
 
 Comprehensive tests for the SuperLocalMemoryChatStore implementation.
 All tests use temporary databases — no production data is touched.
 """
-
 import os
 import sys
 import tempfile

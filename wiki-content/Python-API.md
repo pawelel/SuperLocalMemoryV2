@@ -1,12 +1,12 @@
 # Python API
 
-**Programmatic access to SuperLocalMemory V2** - Import statements, core classes, code examples, and complete API reference for developers.
+**Programmatic access to SuperLocalMemory** - Import statements, core classes, code examples, and complete API reference for developers.
 
 ---
 
 ## Installation
 
-SuperLocalMemory V2 is already installed if you ran `./install.sh`. The Python modules are located at `~/.claude-memory/`.
+SuperLocalMemory is already installed if you ran `./install.sh`. The Python modules are located at `~/.claude-memory/`.
 
 ```bash
 # Verify installation
@@ -747,6 +747,6 @@ if __name__ == '__main__':
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

@@ -16,6 +16,30 @@ SuperLocalMemory V2 - Intelligent local memory system for AI coding assistants.
 
 ---
 
+## [2.8.0] - 2026-02-26
+
+**Release Type:** Major Feature Release — "Memory That Manages Itself"
+
+SuperLocalMemory now manages its own memory lifecycle, learns from action outcomes, and provides enterprise-grade compliance — all 100% locally on your machine.
+
+### Added
+- **Memory Lifecycle Management** — Memories automatically organize themselves over time based on usage patterns, keeping your memory system fast and relevant
+- **Behavioral Learning** — The system learns what works by tracking action outcomes, extracting success patterns, and transferring knowledge across projects
+- **Enterprise Compliance** — Full access control, immutable audit trails, and retention policy management for GDPR, HIPAA, and EU AI Act
+- **6 New MCP Tools** — `report_outcome`, `get_lifecycle_status`, `set_retention_policy`, `compact_memories`, `get_behavioral_patterns`, `audit_trail`
+- **Improved Search** — Lifecycle-aware recall that automatically promotes relevant memories and filters stale ones
+- **Performance Optimized** — Real-time lifecycle management and access control
+
+### Changed
+- Enhanced ranking algorithm with additional signals for improved relevance
+- Improved search ranking using multiple relevance factors
+- Search results include lifecycle state information
+
+### Fixed
+- Configurable storage limits prevent unbounded memory growth
+
+---
+
 ## [2.7.6] - 2026-02-22
 
 ### Improved
@@ -261,7 +285,7 @@ We use [Semantic Versioning](https://semver.org/):
 - **MINOR:** New features (backward compatible, e.g., 2.0.0 → 2.1.0)
 - **PATCH:** Bug fixes (backward compatible, e.g., 2.1.0 → 2.1.1)
 
-**Current Version:** v2.7.4
+**Current Version:** v2.8.0
 **Website:** [superlocalmemory.com](https://superlocalmemory.com)
 **npm:** `npm install -g superlocalmemory`
 

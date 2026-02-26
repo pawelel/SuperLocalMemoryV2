@@ -436,7 +436,7 @@ slm list-profiles
 
 **Created by:** [Varun Pratap Bhardwaj](https://github.com/varun369) (Solution Architect)
 **Project:** SuperLocalMemory V2
-**License:** MIT with attribution requirements (see [ATTRIBUTION.md](../../ATTRIBUTION.md))
+**License:** MIT (see [LICENSE](../../LICENSE))
 **Repository:** https://github.com/varun369/SuperLocalMemoryV2
 
 *Open source doesn't mean removing credit. Attribution must be preserved per MIT License terms.*

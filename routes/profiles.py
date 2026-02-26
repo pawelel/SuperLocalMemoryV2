@@ -1,10 +1,10 @@
-"""
-SuperLocalMemory V2 - Profile Routes
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Profile Routes
+ — MIT License
 
 Routes: /api/profiles, /api/profiles/{name}/switch, /api/profiles/create, DELETE /api/profiles/{name}
 """
-
 import json
 from datetime import datetime
 

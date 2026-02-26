@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LlamaIndex Integration Example
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LlamaIndex Integration Example
 
 Demonstrates how to use SuperLocalMemory V2 as a LlamaIndex chat store
 backend. All data stays local in a SQLite database -- no API keys,
@@ -15,7 +14,6 @@ Requirements:
     pip install llama-index-core
     SuperLocalMemory V2 installed (https://github.com/varun369/SuperLocalMemoryV2)
 """
-
 import os
 import sys
 import tempfile

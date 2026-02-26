@@ -1,6 +1,6 @@
 # Wiki Content Directory
 
-This directory contains the source files for the SuperLocalMemory V2 GitHub Wiki.
+This directory contains the source files for the SuperLocalMemory GitHub Wiki.
 
 ## 🎯 Purpose
 
@@ -177,6 +177,6 @@ These files stay in main repo only (excluded from sync):
 ---
 
 **Created by:** Varun Pratap Bhardwaj (Solution Architect)
-**Project:** SuperLocalMemory V2
+**Project:** SuperLocalMemory
 **License:** MIT
 **Last Updated:** February 7, 2026

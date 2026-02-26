@@ -6,7 +6,7 @@
 
 ## What Are Profiles?
 
-**Profiles** are isolated memory contexts in SuperLocalMemory V2. Each profile has its own:
+**Profiles** are isolated memory contexts in SuperLocalMemory. Each profile has its own:
 - SQLite database
 - Knowledge graph
 - Learned patterns
@@ -688,6 +688,6 @@ slm build-graph
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

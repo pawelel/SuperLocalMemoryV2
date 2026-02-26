@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Learning System (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 Learning System — Feature detection and graceful import.
 
@@ -179,6 +169,31 @@ def get_status() -> dict:
             status["learning_db_stats"] = ldb.get_stats()
         except Exception:
             status["learning_db_stats"] = None
+
+    # v2.8 engine status (lifecycle, behavioral, compliance)
+    v28_engines = {}
+    try:
+        from lifecycle import get_status as lifecycle_status
+        ls = lifecycle_status()
+        v28_engines["lifecycle"] = {"available": ls.get("lifecycle_available", False), "detail": ls}
+    except (ImportError, Exception):
+        v28_engines["lifecycle"] = {"available": False, "detail": None}
+
+    try:
+        from behavioral import get_status as behavioral_status
+        bs = behavioral_status()
+        v28_engines["behavioral"] = {"available": bs.get("behavioral_available", False), "detail": bs}
+    except (ImportError, Exception):
+        v28_engines["behavioral"] = {"available": False, "detail": None}
+
+    try:
+        from compliance import get_status as compliance_status
+        cs = compliance_status()
+        v28_engines["compliance"] = {"available": cs.get("compliance_available", False), "detail": cs}
+    except (ImportError, Exception):
+        v28_engines["compliance"] = {"available": False, "detail": None}
+
+    status["v28_engines"] = v28_engines
 
     return status
 

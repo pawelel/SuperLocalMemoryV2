@@ -1,10 +1,10 @@
-"""
-SuperLocalMemory V2 - WebSocket Routes
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - WebSocket Routes
+ — MIT License
 
 Routes: /ws/updates
 """
-
 from typing import Set
 from datetime import datetime
 

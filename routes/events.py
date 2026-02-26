@@ -1,11 +1,11 @@
-"""
-SuperLocalMemory V2 - Event Bus Routes (v2.5)
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Event Bus Routes (v2.5)
+ — MIT License
 
 Routes: /events/stream (SSE), /api/events, /api/events/stats
 Progressive enhancement: routes only active if Event Bus is available.
 """
-
 import json
 import threading
 import queue as _queue

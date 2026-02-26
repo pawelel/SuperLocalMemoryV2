@@ -1,6 +1,6 @@
 # Universal Architecture
 
-**SuperLocalMemory V2 is built in 10 layers.** Each layer adds a specific capability, and each builds on the one below it. You can use the system at any layer — from simple CLI commands all the way up to a live visual dashboard with real-time events and multi-agent collaboration.
+**SuperLocalMemory is built in 10 layers.** Each layer adds a specific capability, and each builds on the one below it. You can use the system at any layer — from simple CLI commands all the way up to a live visual dashboard with real-time events and multi-agent collaboration.
 
 **Keywords:** universal architecture, system design, 10-layer, local-first, multi-tool, MCP, knowledge graph, hybrid search, dashboard, adaptive learning
 
@@ -22,7 +22,6 @@ All layers share a single database on your machine — no sync, no duplication, 
 
 | Layer | Name | What It Does For You |
 |-------|------|---------------------|
-| 10 | A2A Agent Collaboration | *(Planned v2.8)* Multiple AI agents discover each other and share memory automatically |
 | 9 | Visualization | Web dashboard — search, browse, explore, and manage everything visually |
 | 8 | Hybrid Search | Three-signal retrieval that finds what you mean, not just what you typed |
 | 7 | Universal Access | Works with 17+ tools simultaneously — all reading from the same database |
@@ -183,16 +182,6 @@ python ~/.claude-memory/ui_server.py
 [[Full guide: Visualization Dashboard →|Visualization-Dashboard]]
 [[Interactive graph guide: Using-Interactive-Graph →|Using-Interactive-Graph]]
 
-### Layer 10 — A2A Agent Collaboration *(Planned v2.8)*
-
-Today, each AI tool connects to SuperLocalMemory independently — Cursor reads, Claude writes, Windsurf reads. Layer 10 changes that: multiple AI agents will be able to discover each other, delegate tasks, and share memory updates in real time.
-
-When Cursor learns something new about your preferences, it will broadcast that to every other connected agent immediately. All your tools stay in sync — automatically, without any manual intervention.
-
-**What this will give you:** A coordinated AI team, not a collection of independent tools.
-
-[[Research and roadmap: A2A Integration →|A2A-Integration]]
-
 ---
 
 ## How the Layers Work Together
@@ -278,6 +267,6 @@ Both are backed up automatically. Both are local only.
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Report Issue](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

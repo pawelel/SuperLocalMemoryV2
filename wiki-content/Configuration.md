@@ -1,12 +1,12 @@
 # Configuration
 
-**Configuration options, environment variables, and performance tuning** for SuperLocalMemory V2 - Customize behavior, optimize performance, and adjust settings for your workflow.
+**Configuration options, environment variables, and performance tuning** for SuperLocalMemory - Customize behavior, optimize performance, and adjust settings for your workflow.
 
 ---
 
 ## Configuration Files
 
-SuperLocalMemory V2 uses multiple configuration files:
+SuperLocalMemory uses multiple configuration files:
 
 ### Global Configuration
 
@@ -67,7 +67,7 @@ SuperLocalMemory V2 uses multiple configuration files:
       "env": {
         "PYTHONPATH": "/Users/username/.claude-memory"
       },
-      "description": "SuperLocalMemory V2"
+      "description": "SuperLocalMemory"
     }
   }
 }
@@ -659,7 +659,7 @@ sqlite3 ~/.claude-memory/memory.db "REINDEX;"
 
 **Add to `~/.bashrc`:**
 ```bash
-# SuperLocalMemory V2
+# SuperLocalMemory
 export PATH="$HOME/.claude-memory/bin:$PATH"
 export PYTHONPATH="$HOME/.claude-memory:$PYTHONPATH"
 
@@ -683,7 +683,7 @@ export PS1="\$(slm_prompt) $PS1"
 
 **Add to `~/.zshrc`:**
 ```zsh
-# SuperLocalMemory V2
+# SuperLocalMemory
 export PATH="$HOME/.claude-memory/bin:$PATH"
 export PYTHONPATH="$HOME/.claude-memory:$PYTHONPATH"
 
@@ -837,6 +837,6 @@ source ~/.bashrc  # or ~/.zshrc
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

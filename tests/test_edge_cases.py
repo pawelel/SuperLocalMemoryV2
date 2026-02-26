@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Edge Case Tests (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Edge Case Tests (v2.7)
 
 Tests boundary conditions, malformed input, Unicode handling, SQL injection
 attempts, corrupt data recovery, concurrency under stress, and other edge
@@ -12,7 +11,6 @@ temporary databases -- NEVER touches production ~/.claude-memory/.
 Run with:
     pytest tests/test_edge_cases.py -v
 """
-
 import json
 import sqlite3
 import sys

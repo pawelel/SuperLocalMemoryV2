@@ -1,4 +1,4 @@
-## <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="" width="28" style="vertical-align: middle;"/> SuperLocalMemory V2
+## <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="" width="28" style="vertical-align: middle;"/> SuperLocalMemory
 
 **[[Home]]**
 
@@ -7,6 +7,7 @@
 ### 🚀 Getting Started
 - [[Installation]]
 - [[Upgrading-to-v2.7]]
+- [[Upgrading-to-v2.8]]
 - [[Quick-Start-Tutorial]]
 - [[CLI-Cheatsheet]]
 
@@ -23,6 +24,13 @@
 - [[Universal-Skills]]
 - [[Knowledge-Graph-Guide]]
 - [[Multi-Profile-Workflows]]
+
+---
+
+### 🆕 v2.8 Features
+- [[Memory-Lifecycle]]
+- [[Behavioral-Learning]]
+- [[Enterprise-Compliance]]
 
 ---
 

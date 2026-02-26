@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Signal Inference Engine Tests (v2.7.4)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Signal Inference Engine Tests (v2.7.4)
 
 Tests for the implicit feedback signal inference system.
 """
-
 import time
 import threading
 import pytest
@@ -341,14 +339,14 @@ class TestFeedbackCollectorImplicit:
 
 
 class TestFeatureExpansion:
-    """Test the 10→12 feature vector expansion."""
+    """Test the 10→12→20 feature vector expansion."""
 
-    def test_feature_count_is_12(self):
-        """Feature vector should have 12 dimensions."""
+    def test_feature_count_is_20(self):
+        """Feature vector should have 20 dimensions (v2.8)."""
         sys.path.insert(0, str(Path(__file__).parent.parent))
         from feature_extractor import FEATURE_NAMES, NUM_FEATURES
-        assert NUM_FEATURES == 12
-        assert len(FEATURE_NAMES) == 12
+        assert NUM_FEATURES == 20
+        assert len(FEATURE_NAMES) == 20
 
     def test_new_features_present(self):
         """signal_count and avg_signal_value should be in feature names."""
@@ -359,8 +357,8 @@ class TestFeatureExpansion:
         assert FEATURE_NAMES.index('signal_count') == 10
         assert FEATURE_NAMES.index('avg_signal_value') == 11
 
-    def test_extract_features_returns_12(self):
-        """Extract should return 12-element vector."""
+    def test_extract_features_returns_20(self):
+        """Extract should return 20-element vector (v2.8)."""
         sys.path.insert(0, str(Path(__file__).parent.parent))
         from feature_extractor import FeatureExtractor
         fe = FeatureExtractor()
@@ -368,7 +366,7 @@ class TestFeatureExpansion:
             {'id': 1, 'content': 'test', 'importance': 5},
             'test'
         )
-        assert len(features) == 12
+        assert len(features) == 20
 
     def test_signal_features_with_stats(self):
         """Signal features should use provided stats."""

@@ -1,6 +1,6 @@
 # Knowledge Graph Guide
 
-**How knowledge graphs work in SuperLocalMemory V2** - TF-IDF entity extraction, Leiden clustering, and graph-enhanced search explained for developers.
+**How knowledge graphs work in SuperLocalMemory** - TF-IDF entity extraction, Leiden clustering, and graph-enhanced search explained for developers.
 
 ---
 
@@ -665,6 +665,6 @@ Summaries appear in the web dashboard clusters view and are returned by the `/ap
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

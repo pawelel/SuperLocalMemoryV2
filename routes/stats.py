@@ -1,10 +1,10 @@
-"""
-SuperLocalMemory V2 - Stats Routes
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Stats Routes
+ — MIT License
 
 Routes: /api/stats, /api/timeline, /api/patterns
 """
-
 import json
 from typing import Optional
 from collections import defaultdict

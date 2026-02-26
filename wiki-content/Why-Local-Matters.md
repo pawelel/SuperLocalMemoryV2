@@ -25,7 +25,7 @@ Your Code → Cloud API → Third-Party Servers → Unknown Location
 
 ## The Local Solution
 
-**With SuperLocalMemory V2:**
+**With SuperLocalMemory:**
 ```
 Your Code → Local SQLite → Your Disk
                 ↓
@@ -59,7 +59,7 @@ Mem0:    Your memories → Mem0 servers → AWS/GCP → ??? (3rd parties)
 Zep:     Your memories → Zep servers → Cloud providers → ???
 Personal.AI: Your memories → Personal.AI → ??? → Training data?
 
-SuperLocalMemory V2: Your memories → Your disk → Nowhere
+SuperLocalMemory: Your memories → Your disk → Nowhere
 ```
 
 **No trust required.** It's physically impossible for your data to leak.
@@ -83,13 +83,13 @@ Typical cloud service privacy policy:
 "We may share data with third-party partners..."
 "We analyze your usage patterns..."
 
-SuperLocalMemory V2:
+SuperLocalMemory:
 [No privacy policy needed - we never see your data]
 ```
 
 ### 3. Air-Gap Capability
 
-**SuperLocalMemory V2 works 100% offline:**
+**SuperLocalMemory works 100% offline:**
 ```bash
 # Disconnect from internet
 ifconfig en0 down
@@ -138,7 +138,7 @@ ifconfig en0 up
 
 **HIPAA Requirements for Protected Health Information (PHI):**
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 1. ✅ **Encryption at rest:** Use encrypted disk (FileVault, BitLocker)
 2. ✅ **Encryption in transit:** Not applicable (no network)
 3. ✅ **Access controls:** File permissions
@@ -157,7 +157,7 @@ ifconfig en0 up
 
 ### SOC 2 Compliance
 
-**For your company using SuperLocalMemory V2:**
+**For your company using SuperLocalMemory:**
 - **Security:** Your infrastructure controls apply
 - **Availability:** Your uptime, not vendor's
 - **Processing Integrity:** Your validation
@@ -174,7 +174,7 @@ ifconfig en0 up
 
 ### You Own the Data
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 - Data: SQLite (open standard)
 - Format: SQL + JSON (universal)
 - Tools: Python (open source)
@@ -201,7 +201,7 @@ slm recall "" --format json > all_memories.json
 **Switching costs:**
 - From Mem0: $0 + 1 hour (export via API)
 - From Zep: $0 + 1 hour (export via API)
-- From SuperLocalMemory V2: $0 + 0 hours (copy directory)
+- From SuperLocalMemory: $0 + 0 hours (copy directory)
 
 ### No Surprise Price Changes
 
@@ -217,7 +217,7 @@ slm recall "" --format json > all_memories.json
 - MongoDB Atlas: Reduced free tier limits
 - AWS: Continuous price increases
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```
 2026: Free
 2027: Free
@@ -235,7 +235,7 @@ Forever: Free
 
 ### Unlimited Everything
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 - ✅ Unlimited memories
 - ✅ Unlimited searches
 - ✅ Unlimited profiles
@@ -257,7 +257,7 @@ Cloud: Your memory usage explodes
 Bill: $99 → $299 → $999/month
 You: Consider cutting features to reduce costs
 
-SuperLocalMemory V2: Still $0, no decisions needed
+SuperLocalMemory: Still $0, no decisions needed
 ```
 
 ### No Artificial Restrictions
@@ -270,7 +270,7 @@ SuperLocalMemory V2: Still $0, no decisions needed
 - Max team members
 - Max projects
 
-**SuperLocalMemory V2 quotas:**
+**SuperLocalMemory quotas:**
 - Max memories: Limited only by disk space
 - Max API calls: `∞`
 - Max search requests: `∞`
@@ -286,12 +286,12 @@ SuperLocalMemory V2: Still $0, no decisions needed
 
 **Search latency comparison:**
 ```
-SuperLocalMemory V2:  ~45ms (local SQLite)
+SuperLocalMemory:  ~45ms (local SQLite)
 Mem0:                ~300ms (API + network + server processing)
 Zep:                 ~200ms (API + network + server processing)
 Personal.AI:         ~500ms (API + network + processing)
 
-SuperLocalMemory V2 is 4-11× faster
+SuperLocalMemory is 4-11× faster
 ```
 
 **Why it matters:**
@@ -314,7 +314,7 @@ Request 1-50: ✅ Works
 Request 51+: ❌ Rate limited (wait 60 seconds)
 ```
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```
 Request 1-1000000: ✅ Works
 No waiting
@@ -337,7 +337,7 @@ Latency depends on:
 Result: Variable performance (50ms - 5000ms)
 ```
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```
 Latency depends on:
 - Your disk speed
@@ -358,7 +358,7 @@ Result: Consistent performance (~45ms ±5ms)
 
 **Cloud solutions:** Completely broken
 
-**SuperLocalMemory V2:** Works perfectly
+**SuperLocalMemory:** Works perfectly
 
 ---
 
@@ -380,7 +380,7 @@ Attack vectors:
 - Supply chain attacks
 ```
 
-**SuperLocalMemory V2 attack surface:**
+**SuperLocalMemory attack surface:**
 ```
 Your Code → Local Disk
 
@@ -410,7 +410,7 @@ Risks:
 - Steal via supply chain attack
 ```
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```python
 # No API keys needed
 store = MemoryStoreV2()
@@ -430,7 +430,7 @@ You → Cloud Provider → Cloud Provider's Infrastructure Provider (AWS/GCP) �
 Trust required: All of the above
 ```
 
-**SuperLocalMemory V2 trust chain:**
+**SuperLocalMemory trust chain:**
 ```
 You → Your Computer
 
@@ -445,7 +445,7 @@ Trust required: Yourself
 - CircleCI (2023): Secrets leaked
 - Toyota (2023): 2.15M customers affected
 
-**SuperLocalMemory V2 breaches:** 0 (physically impossible)
+**SuperLocalMemory breaches:** 0 (physically impossible)
 
 **When you get breached:** Only you are affected, not thousands of other customers
 
@@ -455,7 +455,7 @@ Trust required: Yourself
 
 ### Direct Costs
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```
 Setup: $0
 Monthly: $0
@@ -482,7 +482,7 @@ Personal.AI:        $1,980
 - Legal reviews (terms of service changes)
 - Migration costs (when you switch)
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 - None
 
 ### Time Costs
@@ -499,7 +499,7 @@ Personal.AI:        $1,980
 
 **Total: 2.5-3 hours**
 
-**SuperLocalMemory V2 setup:**
+**SuperLocalMemory setup:**
 ```bash
 git clone https://github.com/varun369/SuperLocalMemoryV2.git
 cd SuperLocalMemoryV2
@@ -510,7 +510,7 @@ cd SuperLocalMemoryV2
 
 **Ongoing maintenance:**
 - Cloud: Monitor quotas, costs, uptime, API changes
-- SuperLocalMemory V2: Nothing
+- SuperLocalMemory: Nothing
 
 ---
 
@@ -529,7 +529,7 @@ to use, reproduce, and modify your content..."
 Translation: They can use your data for training, analytics, etc.
 ```
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 ```
 You own your data. Period.
 No license grants.
@@ -550,7 +550,7 @@ Backup systems
 Estimated: ~50-100 Wh per 1000 memories stored/year
 ```
 
-**SuperLocalMemory V2 energy use:**
+**SuperLocalMemory energy use:**
 ```
 Your computer (only when you use it)
 Local processing
@@ -564,7 +564,7 @@ Estimated: ~5-10 Wh per 1000 memories stored/year
 
 ### Open Source Philosophy
 
-**SuperLocalMemory V2:**
+**SuperLocalMemory:**
 - Source code: Public
 - License: MIT (permissive)
 - No vendor lock-in
@@ -585,19 +585,19 @@ Estimated: ~5-10 Wh per 1000 memories stored/year
 **Cloud is better when:**
 
 1. **Large team (50+) needs real-time collaboration**
-   - SuperLocalMemory V2: Git-based collaboration (async)
+   - SuperLocalMemory: Git-based collaboration (async)
    - Cloud: Real-time sync
 
 2. **No technical expertise in team**
-   - SuperLocalMemory V2: Requires basic CLI usage
+   - SuperLocalMemory: Requires basic CLI usage
    - Cloud: Web interface, no setup
 
 3. **Need managed service with SLA**
-   - SuperLocalMemory V2: Self-managed
+   - SuperLocalMemory: Self-managed
    - Cloud: 99.9% uptime guarantees
 
 4. **Using advanced AI embeddings (OpenAI)**
-   - SuperLocalMemory V2: TF-IDF (good but not SOTA)
+   - SuperLocalMemory: TF-IDF (good but not SOTA)
    - Cloud: OpenAI embeddings (better quality)
 
 **For 95% of developers:** Local is better.
@@ -615,6 +615,6 @@ Estimated: ~5-10 Wh per 1000 memories stored/year
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

@@ -1,14 +1,14 @@
 # Frequently Asked Questions
 
-Common questions about SuperLocalMemory V2, answered.
+Common questions about SuperLocalMemory, answered.
 
 ---
 
 ## General Questions
 
-### What is SuperLocalMemory V2?
+### What is SuperLocalMemory?
 
-SuperLocalMemory V2 is an **intelligent local memory system** for AI assistants. It stores your conversations, code decisions, and project context locally, so AI assistants like Claude can remember everything about you and your projects.
+SuperLocalMemory is an **intelligent local memory system** for AI assistants. It stores your conversations, code decisions, and project context locally, so AI assistants like Claude can remember everything about you and your projects.
 
 ### Is it really free?
 
@@ -16,7 +16,7 @@ SuperLocalMemory V2 is an **intelligent local memory system** for AI assistants.
 
 ### Does it only work with Claude?
 
-No! SuperLocalMemory V2.1.0 is **universal** and works with 17+ IDEs:
+No! SuperLocalMemory v2.1.0 is **universal** and works with 17+ IDEs:
 - **MCP Integration:** Cursor, Windsurf, Claude Desktop, Continue.dev, ChatGPT Desktop, Perplexity, Zed, OpenCode, Antigravity
 - **Skills:** Claude Code, Continue.dev, Cody
 - **CLI:** Aider, any terminal
@@ -63,7 +63,7 @@ No. Pattern learning happens entirely locally using basic frequency analysis. No
 
 ### What's the universal architecture?
 
-SuperLocalMemory V2.2.0 has a **9-layer universal architecture**:
+SuperLocalMemory v2.2.0 has a **9-layer universal architecture**:
 
 1. **Layer 9: Visualization** — Interactive web dashboard (NEW v2.2.0)
 2. **Layer 8: Hybrid Search** — Multi-strategy retrieval (NEW v2.2.0)
@@ -142,7 +142,7 @@ Yes. Your data is in `~/.claude-memory/memory.db`. You can:
 
 ### How is this different from Zep?
 
-| Aspect | Zep | SuperLocalMemory V2.1.0 |
+| Aspect | Zep | SuperLocalMemory v2.1.0 |
 |--------|-----|------------------|
 | **Price** | $50/month | Free forever |
 | **Data location** | Cloud | 100% local |
@@ -454,7 +454,7 @@ Yes! See [[Roadmap]] for upcoming features.
 
 **Varun Pratap Bhardwaj** - Solution Architect and Original Creator
 
-SuperLocalMemory V2 is built as an open-source alternative to expensive cloud-based memory services like Mem0 and Zep.
+SuperLocalMemory is built as an open-source alternative to expensive cloud-based memory services like Mem0 and Zep.
 
 - **GitHub:** [github.com/varun369](https://github.com/varun369)
 - **License:** MIT (free for commercial use)

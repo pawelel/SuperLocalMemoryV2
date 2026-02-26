@@ -1,6 +1,6 @@
 # Quick Start Tutorial
 
-**Your first memory in 2 minutes** - Get started with SuperLocalMemory V2's intelligent local memory system for AI coding assistants.
+**Your first memory in 2 minutes** - Get started with SuperLocalMemory's intelligent local memory system for AI coding assistants.
 
 **🌐 Official Website:** [superlocalmemory.com](https://superlocalmemory.com/) | **📦 NPM:** [npmjs.com/package/superlocalmemory](https://www.npmjs.com/package/superlocalmemory)
 
@@ -262,7 +262,7 @@ slm status
 
 **Output:**
 ```
-📊 SuperLocalMemory V2 Status
+📊 SuperLocalMemory Status
 
 Database:
   Total memories: 3
@@ -336,7 +336,7 @@ See [Multi-Profile Workflows](Multi-Profile-Workflows) for advanced usage.
 
 ## Step 5: Explore Dashboard (NEW v2.2.0)
 
-**NEW:** SuperLocalMemory V2.2.0 includes an interactive web dashboard for visual exploration.
+**NEW:** SuperLocalMemory v2.2.0 includes an interactive web dashboard for visual exploration.
 
 ### Launch Dashboard
 
@@ -350,7 +350,7 @@ python ~/.claude-memory/ui_server.py
 **Expected output:**
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2.2.0 - Visualization Dashboard           ║
+║  SuperLocalMemory v2.2.0 - Visualization Dashboard           ║
 ╚══════════════════════════════════════════════════════════════╝
 
 ✓ Database loaded: 3 memories
@@ -688,7 +688,7 @@ For more troubleshooting, see the [Configuration](Configuration) guide.
 ## Summary
 
 You've learned how to:
-- ✅ Install SuperLocalMemory V2
+- ✅ Install SuperLocalMemory
 - ✅ Save your first memory
 - ✅ Search memories semantically
 - ✅ List recent memories
@@ -701,6 +701,6 @@ You've learned how to:
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

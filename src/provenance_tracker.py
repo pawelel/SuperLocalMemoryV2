@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Provenance Tracker
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 ProvenanceTracker — Tracks the origin and lineage of every memory.
 
 Adds provenance columns to the memories table:
     created_by       — Agent ID that created this memory (e.g., "mcp:claude-desktop")
-    source_protocol  — Protocol used (mcp, cli, rest, python, a2a)
+    source_protocol  — Protocol used (mcp, cli, rest, python)
     trust_score      — Trust score at time of creation (default 1.0)
     provenance_chain — JSON array of derivation history
 
@@ -174,7 +164,7 @@ class ProvenanceTracker:
         Args:
             memory_id: ID of the memory to annotate
             created_by: Agent ID that created this memory
-            source_protocol: Protocol used (mcp, cli, rest, python, a2a)
+            source_protocol: Protocol used (mcp, cli, rest, python)
             trust_score: Trust score at time of creation
             derived_from: If this memory was derived from another, its ID
         """

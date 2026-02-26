@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Optional API Key Authentication
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Optional API Key Authentication
 
 Opt-in API key authentication for dashboard and API endpoints.
 When ~/.claude-memory/api_key file exists, write endpoints require
 X-SLM-API-Key header. Read endpoints remain open for backward compatibility.
 """
-
 import os
 import hashlib
 import logging

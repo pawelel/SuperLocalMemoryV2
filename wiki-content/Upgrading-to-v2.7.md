@@ -204,7 +204,7 @@ After upgrading, run these checks to confirm everything works.
 slm status
 ```
 
-Expected: Shows `SuperLocalMemory V2.7.0` in the header.
+Expected: Shows `SuperLocalMemory v2.7.0` in the header.
 
 ### 2. Check Learning System
 
@@ -382,6 +382,6 @@ Yes. Set `"learning": { "enabled": false }` in `config.json`. Everything works e
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect - SuperLocalMemory V2*
+*Solution Architect - SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) | [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) | [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

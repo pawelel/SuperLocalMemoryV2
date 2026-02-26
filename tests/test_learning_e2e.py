@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Learning System End-to-End Tests (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Learning System End-to-End Tests (v2.7)
 
 Full pipeline E2E tests that exercise the complete learning system from
 memory seeding through feedback collection, pattern aggregation, workflow
@@ -12,7 +11,6 @@ touches production ~/.claude-memory/.
 Run with:
     pytest tests/test_learning_e2e.py -v
 """
-
 import hashlib
 import json
 import sqlite3

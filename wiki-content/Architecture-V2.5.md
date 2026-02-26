@@ -1,4 +1,4 @@
-# SuperLocalMemory V2.5 Architecture — "Your AI Memory Has a Heartbeat"
+# SuperLocalMemory v2.5 Architecture — "Your AI Memory Has a Heartbeat"
 
 **Version:** 2.5.0 | **Date:** February 12, 2026 | **Author:** Varun Pratap Bhardwaj
 
@@ -23,7 +23,7 @@ Every write instantly propagates: the dashboard updates live, the connected agen
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    ACCESS LAYER                              │
-│  MCP Server │ CLI │ REST API │ Skills │ Python Import │ A2A  │
+│  MCP Server │ CLI │ REST API │ Skills │ Python Import        │
 └──────────────────────┬──────────────────────────────────────┘
                        │
 ┌──────────────────────┴──────────────────────────────────────┐
@@ -99,4 +99,4 @@ The dashboard exposes 25+ REST endpoints covering: memory CRUD, search, graph da
 
 ---
 
-*SuperLocalMemory V2.5 — Created by Varun Pratap Bhardwaj. MIT License.*
+*SuperLocalMemory v2.5 — Created by Varun Pratap Bhardwaj. MIT License.*

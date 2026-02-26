@@ -1,6 +1,6 @@
 # Installation Guide
 
-Complete installation instructions for SuperLocalMemory V2.7.0 with universal MCP integration on all platforms. This guide covers setup for 17+ IDEs including Claude Desktop, Cursor IDE, Windsurf, VS Code, and more.
+Complete installation instructions for SuperLocalMemory v2.7.0 with universal MCP integration on all platforms. This guide covers setup for 17+ IDEs including Claude Desktop, Cursor IDE, Windsurf, VS Code, and more.
 
 ---
 
@@ -117,7 +117,7 @@ slm status
 The output should show:
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2.7.0 - System Status                     ║
+║  SuperLocalMemory v2.7.0 - System Status                     ║
 ╚══════════════════════════════════════════════════════════════╝
 ✓ Database: OK (0 memories)
 ✓ Graph: Ready
@@ -161,7 +161,7 @@ python ~/.claude-memory/ui_server.py
 **Expected output:**
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2.2.0 - Visualization Dashboard           ║
+║  SuperLocalMemory v2.2.0 - Visualization Dashboard           ║
 ╚══════════════════════════════════════════════════════════════╝
 
 ✓ Database loaded: 523 memories

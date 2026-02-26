@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Demo Data Generator
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Demo Data Generator
 
 Creates synthetic demo data for dashboard screenshots.
 """
-
 import subprocess
 import sys
 import time

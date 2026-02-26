@@ -1436,7 +1436,7 @@ async function loadAgents() {
             var protoBadge = document.createElement('span');
             var protocolColors = {
                 'mcp': 'bg-primary', 'cli': 'bg-success', 'rest': 'bg-info',
-                'python': 'bg-secondary', 'a2a': 'bg-warning'
+                'python': 'bg-secondary'
             };
             protoBadge.className = 'badge ' + (protocolColors[agent.protocol] || 'bg-secondary');
             protoBadge.textContent = agent.protocol;

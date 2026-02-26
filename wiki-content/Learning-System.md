@@ -1,6 +1,6 @@
 # Learning System
 
-**SuperLocalMemory V2 gets smarter the more you use it** — automatically, with no configuration required. It observes your patterns, adapts to your workflow, and surfaces the memories you need before you have to dig for them.
+**SuperLocalMemory gets smarter the more you use it** — automatically, with no configuration required. It observes your patterns, adapts to your workflow, and surfaces the memories you need before you have to dig for them.
 
 ---
 
@@ -314,6 +314,6 @@ slm switch-profile frontend-work
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

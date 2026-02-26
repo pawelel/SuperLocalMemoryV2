@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LangChain Integration Security Tests
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LangChain Integration Security Tests
 
 Security tests covering SQL injection, XSS payloads, oversized content,
 and edge-case session identifiers.  These mirror OWASP agentic-AI concerns
 relevant to a local-first memory store.
 """
-
 import os
 import tempfile
 

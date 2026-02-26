@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Graph Integration Tests (v2.6.5)
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Graph Integration Tests (v2.6.5)
 Tests interactive graph visualization features using Playwright
 """
-
 import asyncio
 import sys
 from pathlib import Path

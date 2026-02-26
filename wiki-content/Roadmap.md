@@ -1,6 +1,6 @@
 # Roadmap
 
-**Completed features, planned releases, and long-term vision** for SuperLocalMemory V2 - Community requests, contribution opportunities, and development timeline.
+**Completed features, planned releases, and long-term vision** for SuperLocalMemory - Community requests, contribution opportunities, and development timeline.
 
 ---
 
@@ -223,30 +223,6 @@ Expand pattern detection to include testing strategies, error handling patterns,
 
 ---
 
-### v2.8 (Q3-Q4 2026) - Multi-Agent Collaboration
-
-**Theme:** Agent-to-Agent protocol support
-
-**Why?** MCP (Model Context Protocol) connects AI tools to memory (agent-to-tool). The Agent-to-Agent Protocol enables AI agents to collaborate with each other through shared memory. Together, MCP + A2A make SuperLocalMemory the complete memory backbone for the multi-agent era.
-
-**Planned Features:**
-
-#### 1. A2A Agent Discovery
-SuperLocalMemory becomes discoverable by other A2A-compatible agents, which can delegate memory tasks to it.
-
-#### 2. Agent Authentication & Security
-Control which agents can access your memory. Local-first security model with per-agent permissions.
-
-#### 3. Memory Task Management
-Stateful, async memory operations that other agents can track.
-
-#### 4. Real-Time Memory Broadcasting
-When Agent A stores a memory, Agent B gets notified instantly — enabling seamless multi-tool workflows.
-
-**Core principle:** A2A is opt-in. The system works perfectly with MCP-only. A2A adds multi-agent collaboration for users who need it.
-
----
-
 ### v3.0.0 (Q4 2026) - Distribution & Ecosystem
 
 **Theme:** Professional packaging and ecosystem expansion
@@ -298,8 +274,7 @@ Automatic recall of relevant memories based on what you're currently working on.
 
 1. ✅ **Multi-IDE support** (Completed in v2.1.0)
 2. 🔨 **REST API** (In progress, v2.2.0)
-3. 📝 **Multi-agent collaboration** (Planned, v2.8)
-4. 📝 **Docker container** (Planned, v2.2.0)
+3. 📝 **Docker container** (Planned, v2.2.0)
 5. 📝 **Enhanced embeddings** (Planned, v2.3.0)
 
 ### How to Request Features
@@ -406,6 +381,6 @@ Open a discussion: https://github.com/varun369/SuperLocalMemoryV2/discussions
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

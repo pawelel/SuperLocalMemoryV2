@@ -1,6 +1,6 @@
 # Pattern Learning Explained
 
-**How pattern learning works in SuperLocalMemory V2** - Automatic detection of your coding preferences and style, all processed locally for privacy.
+**How pattern learning works in SuperLocalMemory** - Automatic detection of your coding preferences and style, all processed locally for privacy.
 
 ---
 
@@ -330,6 +330,6 @@ slm switch-profile personal
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

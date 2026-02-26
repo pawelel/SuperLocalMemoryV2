@@ -1,14 +1,9 @@
 <p align="center">
-  <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="SuperLocalMemory V2" width="200"/>
+  <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="SuperLocalMemory" width="200"/>
 </p>
 
-<h1 align="center">SuperLocalMemory V2</h1>
+<h1 align="center">SuperLocalMemory</h1>
 <p align="center"><strong>Your AI Finally Remembers You</strong></p>
-
-<p align="center">
-  <strong>⚡ Created & Architected by <a href="https://github.com/varun369">Varun Pratap Bhardwaj</a> ⚡</strong><br/>
-  <em>Solution Architect • Original Creator • 2026</em>
-</p>
 
 <p align="center">
   <strong>Stop re-explaining your codebase every session. 100% local. Zero setup. Completely free.</strong>
@@ -45,7 +40,7 @@
 <p align="center">
   <b>Created by <a href="https://github.com/varun369">Varun Pratap Bhardwaj</a></b> •
   <a href="https://github.com/sponsors/varun369">💖 Sponsor</a> •
-  <a href="ATTRIBUTION.md">📜 Attribution Required</a>
+  <a href="LICENSE">📜 MIT License</a>
 </p>
 
 ---
@@ -63,6 +58,7 @@ The paper presents SuperLocalMemory's architecture for defending against OWASP A
 | **Zenodo** (CERN) | [DOI: 10.5281/zenodo.18709670](https://zenodo.org/records/18709670) |
 | **ResearchGate** | [Publication Page](https://www.researchgate.net/publication/400976053) |
 | **arXiv** | Submission under review |
+| **Research Portfolio** | [superlocalmemory.com/research](https://superlocalmemory.com/research) |
 
 If you use SuperLocalMemory in your research, please cite:
 
@@ -79,72 +75,79 @@ If you use SuperLocalMemory in your research, please cite:
 
 ---
 
-## What's New in v2.7 — "Your AI Learns You"
+## What's New in v2.8 — "Memory That Manages Itself"
 
-**SuperLocalMemory now learns your patterns, adapts to your workflow, and personalizes recall — all 100% locally on your machine.** No cloud. No LLM. Your behavioral data never leaves your device.
+**SuperLocalMemory now manages its own memory lifecycle, learns from action outcomes, and provides enterprise-grade compliance — all 100% locally on your machine.**
 
-### Adaptive Learning System
+### Memory Lifecycle Management (v2.8)
+Memories automatically transition through lifecycle states based on usage patterns:
+- **Active** — Frequently used, instantly available
+- **Warm** — Recently used, included in searches
+- **Cold** — Older, retrievable on demand
+- **Archived** — Compressed, restorable when needed
 
-Your memory system evolves with you through three learning layers:
+Configure bounds to keep your memory system fast:
+```bash
+# Check lifecycle status
+slm lifecycle-status
 
-| Layer | What It Learns | How |
-|-------|---------------|-----|
-| **Tech Preferences** | "You prefer FastAPI over Django" (83% confidence) | Automatic learning from your usage patterns |
-| **Project Context** | Detects your active project automatically | Path, tags, profile, and content analysis |
-| **Workflow Patterns** | "You typically: docs → architecture → code → test" | Sequence learning from your actual workflows |
+# Compact stale memories
+slm compact --dry-run
+```
 
-### Three-Phase Adaptive Ranking
+### Behavioral Learning (v2.8)
+The system learns from what works:
+- Report outcomes: `slm report-outcome --memory-ids 1,5 --outcome success`
+- View patterns: `slm behavioral-patterns`
+- Knowledge transfers across projects automatically
 
-Recall results get smarter over time — automatically:
+### Enterprise Compliance (v2.8)
+Built for regulated environments:
+- **Access Control** — Attribute-based policies (ABAC)
+- **Audit Trail** — Tamper-evident event logging
+- **Retention Policies** — GDPR erasure, HIPAA retention, EU AI Act compliance
 
-1. **Phase 1 (Baseline):** Standard search — same as v2.6
-2. **Phase 2 (Rule-Based):** After ~20 feedback signals — boosts results matching your preferences
-3. **Phase 3 (ML Ranking):** After ~200 signals — local machine learning re-ranks based on your personalized profile
-
-### Privacy by Design — GDPR Compliant
-
-| Concern | SuperLocalMemory v2.7 | Cloud-Based Alternatives |
-|---------|----------------------|--------------------------|
-| **Where is learning data?** | `~/.claude-memory/learning.db` on YOUR machine | Their servers, their terms |
-| **Who processes your behavior?** | Local gradient boosting (no LLM, no GPU) | Cloud LLMs process your data |
-| **Right to erasure (GDPR Art. 17)?** | `slm learning reset` — one command, instant | Submit a request, wait weeks |
-| **Data portability?** | Copy the SQLite file | Vendor lock-in |
-| **Telemetry?** | Zero. Absolutely none. | Usage analytics, behavior tracking |
-
-**Your learning data is stored separately from your memories.** Delete `learning.db` and your memories are untouched. Delete `memory.db` and your learning patterns are untouched. Full data sovereignty.
-
-### Research-Backed Architecture
-
-Every component is grounded in peer-reviewed research, adapted for local-first operation. See the [published paper](https://zenodo.org/records/18709670) for full technical details and citations.
-
-### New MCP Tools
+### New MCP Tools (v2.8)
 
 | Tool | Purpose |
 |------|---------|
-| `memory_used` | Tell the AI which recalled memories were useful — trains the ranking model |
-| `get_learned_patterns` | See what the system has learned about your preferences |
-| `correct_pattern` | Fix a wrong pattern — your correction overrides with maximum confidence |
+| `report_outcome` | Record action outcomes for behavioral learning |
+| `get_lifecycle_status` | View memory lifecycle states |
+| `set_retention_policy` | Configure retention policies |
+| `compact_memories` | Trigger lifecycle transitions |
+| `get_behavioral_patterns` | View learned behavioral patterns |
+| `audit_trail` | Query compliance audit trail |
 
-### New CLI Commands
+### Performance
 
-```bash
-slm useful 42 87           # Mark memories as useful (ranking feedback)
-slm patterns list           # See learned tech preferences
-slm learning status         # Learning system diagnostics
-slm learning reset          # Delete all behavioral data (memories preserved)
-slm engagement              # Local engagement health metrics
-```
+| Operation | Latency |
+|-----------|---------|
+| Lifecycle evaluation | Sub-2ms |
+| Access control check | Sub-1ms |
+| Feature vector (20-dim) | Sub-5ms |
 
-**Upgrade:** `npm install -g superlocalmemory@latest` — Learning dependencies install automatically.
+**Upgrade:** `npm install -g superlocalmemory@latest` — All v2.7 behavior preserved, zero breaking changes.
 
-[Learning System Guide →](https://github.com/varun369/SuperLocalMemoryV2/wiki/Learning-System) | [Upgrade Guide →](https://github.com/varun369/SuperLocalMemoryV2/wiki/Upgrading-to-v2.7) | [Full Changelog](CHANGELOG.md)
+[Upgrading to v2.8](https://github.com/varun369/SuperLocalMemoryV2/wiki/Upgrading-to-v2.8) | [Full Changelog](CHANGELOG.md)
 
 ---
 
 <details>
+<summary><strong>Previous: v2.7 — "Your AI Learns You"</strong></summary>
+
+SuperLocalMemory learns your patterns, adapts to your workflow, and personalizes recall — all 100% locally. No cloud. No LLM. Your behavioral data never leaves your device.
+
+- **Adaptive Learning** — Learns tech preferences, project context, and workflow patterns
+- **Three-Phase Ranking** — Baseline → Rule-Based → ML Ranking (gets smarter over time)
+- **Privacy by Design** — Learning data stored separately, one-command GDPR erasure
+- **3 New MCP Tools** — Feedback signal, pattern transparency, and user correction
+
+</details>
+
+<details>
 <summary><strong>Previous: v2.6.5 — Interactive Knowledge Graph</strong></summary>
 
-- Fully interactive visualization with zoom, pan, click-to-explore (Cytoscape.js)
+- Fully interactive visualization with zoom, pan, and click-to-explore
 - 6 layout algorithms, smart cluster filtering, 10,000+ node performance
 - Mobile & accessibility support: touch gestures, keyboard nav, screen reader
 
@@ -287,7 +290,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 │  17+ IDEs with single database                              │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 6: MCP INTEGRATION                                   │
-│  Model Context Protocol: 12 tools, 6 resources, 2 prompts   │
+│  Model Context Protocol: 18 tools, 6 resources, 2 prompts   │
 │  Auto-configured for Cursor, Windsurf, Claude               │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 5½: ADAPTIVE LEARNING (v2.7 — NEW)                   │
@@ -303,7 +306,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 │  "You prefer React over Vue" (73% confidence)               │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 3: KNOWLEDGE GRAPH + HIERARCHICAL CLUSTERING         │
-│  Auto-clustering: "Python" → "FastAPI" → "Auth"            │
+│  Auto-clustering: "Python" → "Web API" → "Auth"            │
 │  Community summaries with auto-generated labels             │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 2: HIERARCHICAL INDEX                                │
@@ -326,12 +329,15 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 - **[Visualization Dashboard](https://github.com/varun369/SuperLocalMemoryV2/wiki/Visualization-Dashboard)** — Web UI for timeline, search, graph exploration, analytics.
 - **[Framework Integrations](docs/FRAMEWORK-INTEGRATIONS.md)** — Use with LangChain and LlamaIndex applications.
 - **[Real-Time Events](https://github.com/varun369/SuperLocalMemoryV2/wiki/Real-Time-Event-System)** — Live notifications via SSE/WebSocket/Webhooks when memories change.
+- **[Memory Lifecycle](https://github.com/varun369/SuperLocalMemoryV2/wiki/Memory-Lifecycle)** — Automatic state transitions (Active → Warm → Cold → Archived) with bounded growth guarantees. *New in v2.8*
+- **[Behavioral Learning](https://github.com/varun369/SuperLocalMemoryV2/wiki/Behavioral-Learning)** — Learns from action outcomes, extracts success/failure patterns, transfers knowledge across projects. *New in v2.8*
+- **[Enterprise Compliance](https://github.com/varun369/SuperLocalMemoryV2/wiki/Enterprise-Compliance)** — ABAC access control, tamper-evident audit trail, GDPR/HIPAA/EU AI Act retention policies. *New in v2.8*
 
 ---
 
 ## 🌐 Works Everywhere
 
-**SuperLocalMemory V2 is the ONLY memory system that works across ALL your tools:**
+**SuperLocalMemory is the ONLY memory system that works across ALL your tools:**
 
 ### Supported IDEs & Tools
 
@@ -356,7 +362,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 1. **MCP (Model Context Protocol)** — Auto-configured for Cursor, Windsurf, Claude Desktop
    - AI assistants get natural access to your memory
    - No manual commands needed
-   - "Remember that we use FastAPI" just works
+   - "Remember that we use this framework" just works
 
 2. **Skills & Commands** — For Claude Code, Continue.dev, Cody
    - `/superlocalmemoryv2:remember` in Claude Code
@@ -385,11 +391,11 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 | **Supermemory** | 1M tokens, 10K queries | $19-399/mo | Not local, no graphs |
 | **Personal.AI** | ❌ No free tier | $33/month | Cloud-only, closed ecosystem |
 | **Letta/MemGPT** | Self-hosted (complex) | TBD | Requires significant setup |
-| **SuperLocalMemory V2** | **Unlimited** | **$0 forever** | **Nothing.** |
+| **SuperLocalMemory** | **Unlimited** | **$0 forever** | **Nothing.** |
 
 ### What Actually Matters
 
-| Feature | Mem0 | Zep | Khoj | Letta | **SuperLocalMemory V2** |
+| Feature | Mem0 | Zep | Khoj | Letta | **SuperLocalMemory** |
 |---------|------|-----|------|-------|------------------------|
 | **Works in Cursor** | Cloud Only | ❌ | ❌ | ❌ | ✅ **Local** |
 | **Works in Windsurf** | Cloud Only | ❌ | ❌ | ❌ | ✅ **Local** |
@@ -404,7 +410,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 | **Zero Setup** | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **Completely Free** | Limited | Limited | Partial | ✅ | ✅ |
 
-**SuperLocalMemory V2 is the ONLY solution that:**
+**SuperLocalMemory is the ONLY solution that:**
 - ✅ **Learns and adapts** locally — no cloud LLM needed for personalization
 - ✅ Works across 17+ IDEs and CLI tools
 - ✅ Remains 100% local (no cloud dependencies)
@@ -497,6 +503,10 @@ python ~/.claude-memory/ui_server.py                     # Launch web UI
 | [Framework Integrations](docs/FRAMEWORK-INTEGRATIONS.md) | LangChain & LlamaIndex setup |
 | [Knowledge Graph](https://github.com/varun369/SuperLocalMemoryV2/wiki/Knowledge-Graph-Guide) | How clustering works |
 | [Pattern Learning](docs/PATTERN-LEARNING.md) | Identity extraction |
+| [Memory Lifecycle](https://github.com/varun369/SuperLocalMemoryV2/wiki/Memory-Lifecycle) | Lifecycle states, compaction, bounded growth (v2.8) |
+| [Behavioral Learning](https://github.com/varun369/SuperLocalMemoryV2/wiki/Behavioral-Learning) | Action outcomes, pattern extraction (v2.8) |
+| [Enterprise Compliance](https://github.com/varun369/SuperLocalMemoryV2/wiki/Enterprise-Compliance) | ABAC, audit trail, retention policies (v2.8) |
+| [Upgrading to v2.8](https://github.com/varun369/SuperLocalMemoryV2/wiki/Upgrading-to-v2.8) | Migration guide from v2.7 |
 | [API Reference](docs/API-REFERENCE.md) | Python API documentation |
 
 ---

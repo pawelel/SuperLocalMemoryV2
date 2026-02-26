@@ -20,6 +20,9 @@ profiles.json
 # ==== BACKUP DIRECTORY (Internal/archived files) ====
 .backup/
 
+# ==== CLAUDE CODE CONFIG (Never commit) ====
+.claude/
+
 # ==== INTERNAL PROCESS DOCS (Never commit) ====
 # Strategy, planning, test reports, screenshot tooling
 *STRATEGY*.md

@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Learning Database Manager (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 LearningDB — Manages the separate learning.db for behavioral data.
 
@@ -274,6 +264,63 @@ class LearningDB:
                 'CREATE INDEX IF NOT EXISTS idx_engagement_date '
                 'ON engagement_metrics(metric_date)'
             )
+
+            # ------------------------------------------------------------------
+            # v2.8.0: Behavioral learning tables
+            # ------------------------------------------------------------------
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS action_outcomes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    memory_ids TEXT NOT NULL,
+                    outcome TEXT NOT NULL,
+                    action_type TEXT DEFAULT 'other',
+                    context TEXT DEFAULT '{}',
+                    confidence REAL DEFAULT 1.0,
+                    agent_id TEXT DEFAULT 'user',
+                    project TEXT,
+                    profile TEXT DEFAULT 'default',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS behavioral_patterns (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    pattern_type TEXT NOT NULL,
+                    pattern_key TEXT NOT NULL,
+                    success_rate REAL DEFAULT 0.0,
+                    evidence_count INTEGER DEFAULT 0,
+                    confidence REAL DEFAULT 0.0,
+                    metadata TEXT DEFAULT '{}',
+                    project TEXT,
+                    profile TEXT DEFAULT 'default',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS cross_project_behaviors (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    source_project TEXT NOT NULL,
+                    target_project TEXT NOT NULL,
+                    pattern_id INTEGER NOT NULL,
+                    transfer_type TEXT DEFAULT 'metadata',
+                    confidence REAL DEFAULT 0.0,
+                    profile TEXT DEFAULT 'default',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (pattern_id) REFERENCES behavioral_patterns(id)
+                )
+            ''')
+
+            # v2.8.0 indexes
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_outcomes_memory ON action_outcomes(memory_ids)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_outcomes_project ON action_outcomes(project)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_outcomes_profile ON action_outcomes(profile)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_bpatterns_type ON behavioral_patterns(pattern_type)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_bpatterns_project ON behavioral_patterns(project)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_xproject_source ON cross_project_behaviors(source_project)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_xproject_target ON cross_project_behaviors(target_project)')
 
             conn.commit()
             logger.info("Learning schema initialized successfully")
@@ -912,6 +959,127 @@ class LearningDB:
                 stats['db_size_kb'] = 0
 
             return stats
+        finally:
+            conn.close()
+
+    # ======================================================================
+    # v2.8.0: Action Outcomes CRUD
+    # ======================================================================
+
+    def store_outcome(self, memory_ids, outcome, action_type="other", context=None, confidence=1.0, agent_id="user", project=None, profile="default"):
+        """Store an action outcome for behavioral learning."""
+        memory_ids_str = json.dumps(memory_ids if isinstance(memory_ids, list) else [memory_ids])
+        context_str = json.dumps(context or {})
+        conn = self._get_connection()
+        try:
+            with self._write_lock:
+                cursor = conn.execute(
+                    "INSERT INTO action_outcomes (memory_ids, outcome, action_type, context, confidence, agent_id, project, profile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (memory_ids_str, outcome, action_type, context_str, confidence, agent_id, project, profile),
+                )
+                conn.commit()
+                return cursor.lastrowid
+        finally:
+            conn.close()
+
+    def get_outcomes(self, memory_id=None, project=None, profile="default", limit=100):
+        """Get action outcomes, optionally filtered."""
+        conn = self._get_connection()
+        try:
+            query = "SELECT * FROM action_outcomes WHERE profile = ?"
+            params = [profile]
+            if project:
+                query += " AND project = ?"
+                params.append(project)
+            query += " ORDER BY created_at DESC LIMIT ?"
+            params.append(limit)
+            rows = conn.execute(query, params).fetchall()
+            results = []
+            for row in rows:
+                d = dict(row)
+                d["memory_ids"] = json.loads(d["memory_ids"])
+                d["context"] = json.loads(d["context"])
+                if memory_id and memory_id not in d["memory_ids"]:
+                    continue
+                results.append(d)
+            return results
+        finally:
+            conn.close()
+
+    # ======================================================================
+    # v2.8.0: Behavioral Patterns CRUD
+    # ======================================================================
+
+    def store_behavioral_pattern(self, pattern_type, pattern_key, success_rate=0.0, evidence_count=0, confidence=0.0, metadata=None, project=None, profile="default"):
+        """Store or update a behavioral pattern."""
+        metadata_str = json.dumps(metadata or {})
+        conn = self._get_connection()
+        try:
+            with self._write_lock:
+                cursor = conn.execute(
+                    "INSERT INTO behavioral_patterns (pattern_type, pattern_key, success_rate, evidence_count, confidence, metadata, project, profile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (pattern_type, pattern_key, success_rate, evidence_count, confidence, metadata_str, project, profile),
+                )
+                conn.commit()
+                return cursor.lastrowid
+        finally:
+            conn.close()
+
+    def get_behavioral_patterns(self, pattern_type=None, project=None, min_confidence=0.0, profile="default"):
+        """Get behavioral patterns, optionally filtered."""
+        conn = self._get_connection()
+        try:
+            query = "SELECT * FROM behavioral_patterns WHERE profile = ? AND confidence >= ?"
+            params = [profile, min_confidence]
+            if pattern_type:
+                query += " AND pattern_type = ?"
+                params.append(pattern_type)
+            if project:
+                query += " AND project = ?"
+                params.append(project)
+            query += " ORDER BY confidence DESC"
+            rows = conn.execute(query, params).fetchall()
+            results = []
+            for row in rows:
+                d = dict(row)
+                d["metadata"] = json.loads(d["metadata"])
+                results.append(d)
+            return results
+        finally:
+            conn.close()
+
+    # ======================================================================
+    # v2.8.0: Cross-Project CRUD
+    # ======================================================================
+
+    def store_cross_project(self, source_project, target_project, pattern_id, transfer_type="metadata", confidence=0.0, profile="default"):
+        """Record a cross-project behavioral transfer."""
+        conn = self._get_connection()
+        try:
+            with self._write_lock:
+                cursor = conn.execute(
+                    "INSERT INTO cross_project_behaviors (source_project, target_project, pattern_id, transfer_type, confidence, profile) VALUES (?, ?, ?, ?, ?, ?)",
+                    (source_project, target_project, pattern_id, transfer_type, confidence, profile),
+                )
+                conn.commit()
+                return cursor.lastrowid
+        finally:
+            conn.close()
+
+    def get_cross_project_transfers(self, source_project=None, target_project=None, profile="default"):
+        """Get cross-project transfer records."""
+        conn = self._get_connection()
+        try:
+            query = "SELECT * FROM cross_project_behaviors WHERE profile = ?"
+            params = [profile]
+            if source_project:
+                query += " AND source_project = ?"
+                params.append(source_project)
+            if target_project:
+                query += " AND target_project = ?"
+                params.append(target_project)
+            query += " ORDER BY created_at DESC"
+            return [dict(row) for row in conn.execute(query, params).fetchall()]
         finally:
             conn.close()
 

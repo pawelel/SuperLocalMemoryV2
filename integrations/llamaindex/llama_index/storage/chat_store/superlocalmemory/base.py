@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LlamaIndex Chat Store Backend
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LlamaIndex Chat Store Backend
 
 Implements LlamaIndex's BaseChatStore backed by SuperLocalMemory V2's
 local SQLite storage. All data stays on-device — zero cloud, zero telemetry.
@@ -14,7 +13,6 @@ Usage:
     chat_store = SuperLocalMemoryChatStore()
     memory = ChatMemoryBuffer.from_defaults(chat_store=chat_store, chat_store_key="user-123")
 """
-
 import hashlib
 import json
 import sys

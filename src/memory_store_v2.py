@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Intelligent Local Memory System
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 MemoryStore V2 - Extended Memory System with Tree and Graph Support
 Maintains backward compatibility with V1 API while adding:
@@ -320,6 +310,19 @@ class MemoryStoreV2:
                         # Column might already exist from concurrent migration
                         pass
 
+            # v2.8.0 schema migration — lifecycle + access control columns
+            _v28_migrations = [
+                ("lifecycle_state", "TEXT DEFAULT 'active'"),
+                ("lifecycle_updated_at", "TIMESTAMP"),
+                ("lifecycle_history", "TEXT DEFAULT '[]'"),
+                ("access_level", "TEXT DEFAULT 'public'"),
+            ]
+            for col_name, col_type in _v28_migrations:
+                try:
+                    cursor.execute(f"ALTER TABLE memories ADD COLUMN {col_name} {col_type}")
+                except sqlite3.OperationalError:
+                    pass  # Column already exists
+
             # Sessions table (V1 compatible)
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS sessions (
@@ -381,6 +384,13 @@ class MemoryStoreV2:
                     # Column doesn't exist yet (old database) - skip index creation
                     # Index will be created automatically on next schema upgrade
                     pass
+
+            # v2.8.0 indexes for lifecycle + access control
+            try:
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_lifecycle_state ON memories(lifecycle_state)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_access_level ON memories(access_level)")
+            except sqlite3.OperationalError:
+                pass
 
             # Creator Attribution Metadata Table (REQUIRED by MIT License)
             # This table embeds creator information directly in the database
@@ -604,7 +614,9 @@ class MemoryStoreV2:
         memory_type: Optional[str] = None,
         category: Optional[str] = None,
         cluster_id: Optional[int] = None,
-        min_importance: Optional[int] = None
+        min_importance: Optional[int] = None,
+        lifecycle_states: Optional[tuple] = None,
+        agent_context: Optional[Dict[str, Any]] = None,
     ) -> List[Dict[str, Any]]:
         """
         Search memories with enhanced V2 filtering.
@@ -617,10 +629,14 @@ class MemoryStoreV2:
             category: Filter by category
             cluster_id: Filter by graph cluster
             min_importance: Minimum importance score
+            lifecycle_states: Tuple of lifecycle states to include (default: active, warm)
 
         Returns:
             List of memory dictionaries with scores
         """
+        if lifecycle_states is None:
+            lifecycle_states = ("active", "warm")
+
         results = []
         active_profile = self._get_active_profile()
 
@@ -640,12 +656,12 @@ class MemoryStoreV2:
                                     SELECT id, content, summary, project_path, project_name, tags,
                                            category, parent_id, tree_path, depth,
                                            memory_type, importance, created_at, cluster_id,
-                                           last_accessed, access_count
+                                           last_accessed, access_count, lifecycle_state
                                     FROM memories WHERE id = ? AND profile = ?
                                 ''', (memory_id, active_profile))
                                 row = cursor.fetchone()
                                 if row and self._apply_filters(row, project_path, memory_type,
-                                                              category, cluster_id, min_importance):
+                                                              category, cluster_id, min_importance, lifecycle_states):
                                     results.append(self._row_to_dict(row, score, 'hnsw'))
                         _hnsw_used = len(results) > 0
                 except (ImportError, Exception):
@@ -670,13 +686,13 @@ class MemoryStoreV2:
                                     SELECT id, content, summary, project_path, project_name, tags,
                                            category, parent_id, tree_path, depth,
                                            memory_type, importance, created_at, cluster_id,
-                                           last_accessed, access_count
+                                           last_accessed, access_count, lifecycle_state
                                     FROM memories WHERE id = ? AND profile = ?
                                 ''', (memory_id, active_profile))
                                 row = cursor.fetchone()
 
                                 if row and self._apply_filters(row, project_path, memory_type,
-                                                              category, cluster_id, min_importance):
+                                                              category, cluster_id, min_importance, lifecycle_states):
                                     results.append(self._row_to_dict(row, score, 'semantic'))
 
                 except Exception as e:
@@ -694,7 +710,7 @@ class MemoryStoreV2:
                     SELECT m.id, m.content, m.summary, m.project_path, m.project_name,
                            m.tags, m.category, m.parent_id, m.tree_path, m.depth,
                            m.memory_type, m.importance, m.created_at, m.cluster_id,
-                           m.last_accessed, m.access_count
+                           m.last_accessed, m.access_count, m.lifecycle_state
                     FROM memories m
                     JOIN memories_fts fts ON m.id = fts.rowid
                     WHERE memories_fts MATCH ? AND m.profile = ?
@@ -707,11 +723,22 @@ class MemoryStoreV2:
                 for row in cursor.fetchall():
                     if row[0] not in existing_ids:
                         if self._apply_filters(row, project_path, memory_type,
-                                              category, cluster_id, min_importance):
+                                              category, cluster_id, min_importance, lifecycle_states):
                             results.append(self._row_to_dict(row, 0.5, 'keyword'))
 
         # Update access tracking for returned results
         self._update_access_tracking([r['id'] for r in results])
+
+        # Reactivate warm memories that were recalled (lifecycle v2.8)
+        warm_ids = [r['id'] for r in results if r.get('lifecycle_state') == 'warm']
+        if warm_ids:
+            try:
+                from lifecycle.lifecycle_engine import LifecycleEngine
+                engine = LifecycleEngine(self.db_path)
+                for mem_id in warm_ids:
+                    engine.reactivate_memory(mem_id, trigger="recall")
+            except (ImportError, Exception):
+                pass  # Lifecycle engine not available
 
         # Sort by score and limit
         results.sort(key=lambda x: x['score'], reverse=True)
@@ -724,7 +751,8 @@ class MemoryStoreV2:
         memory_type: Optional[str],
         category: Optional[str],
         cluster_id: Optional[int],
-        min_importance: Optional[int]
+        min_importance: Optional[int],
+        lifecycle_states: Optional[tuple] = None,
     ) -> bool:
         """Apply filter criteria to a database row."""
         # Row indices: project_path=3, category=6, memory_type=10, importance=11, cluster_id=13
@@ -738,7 +766,34 @@ class MemoryStoreV2:
             return False
         if min_importance is not None and (row[11] or 0) < min_importance:
             return False
+        # Lifecycle state filter (v2.8) — index 16 if present
+        if lifecycle_states and len(row) > 16:
+            state = row[16] or "active"
+            if state not in lifecycle_states:
+                return False
         return True
+
+    def _check_abac(
+        self,
+        subject: Dict[str, Any],
+        resource: Dict[str, Any],
+        action: str,
+        policy_path: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Check ABAC policy for an access request.
+
+        Returns {"allowed": True/False, "reason": str}.
+        When ABAC engine is unavailable (import error, missing file),
+        defaults to allow for backward compatibility with v2.7.
+        """
+        try:
+            from compliance.abac_engine import ABACEngine
+            if policy_path is None:
+                policy_path = str(Path(self.db_path).parent / "abac_policies.json")
+            engine = ABACEngine(config_path=policy_path)
+            return engine.evaluate(subject=subject, resource=resource, action=action)
+        except (ImportError, Exception):
+            return {"allowed": True, "reason": "ABAC unavailable — default allow"}
 
     def _row_to_dict(self, row: tuple, score: float, match_type: str) -> Dict[str, Any]:
         """Convert database row to memory dictionary."""
@@ -771,6 +826,7 @@ class MemoryStoreV2:
             'cluster_id': row[13],
             'last_accessed': row[14],
             'access_count': row[15],
+            'lifecycle_state': row[16] if len(row) > 16 else 'active',
             'score': score,
             'match_type': match_type
         }

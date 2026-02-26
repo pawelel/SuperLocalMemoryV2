@@ -1,6 +1,6 @@
 # CLI Cheatsheet
 
-**Quick reference for all SuperLocalMemory V2 commands** - Copy-paste ready commands organized by task for fast lookup.
+**Quick reference for all SuperLocalMemory commands** - Copy-paste ready commands organized by task for fast lookup.
 
 ---
 
@@ -500,6 +500,6 @@ cd ~/path/to/SuperLocalMemoryV2
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

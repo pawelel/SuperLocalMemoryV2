@@ -1,6 +1,6 @@
 # Universal Skills
 
-SuperLocalMemory V2.1.0 includes **7 universal agent-skills** that work as slash-commands in Claude Code, Continue.dev, and Cody. These ai-skills provide a consistent interface across different AI assistants while accessing the same local memory database.
+SuperLocalMemory v2.1.0 includes **7 universal agent-skills** that work as slash-commands in Claude Code, Continue.dev, and Cody. These ai-skills provide a consistent interface across different AI assistants while accessing the same local memory database.
 
 **Keywords:** agent-skills, slash-commands, ai-skills, claude-code, continue-dev, cody
 
@@ -254,7 +254,7 @@ Recent Memories (10):
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2.1.0 - System Status                     ║
+║  SuperLocalMemory v2.1.0 - System Status                     ║
 ╚══════════════════════════════════════════════════════════════╝
 
 ✓ Database: OK
@@ -458,11 +458,11 @@ name: slm-remember
 description: Save content to SuperLocalMemory
 version: "2.1.0"
 license: MIT
-compatibility: "Requires SuperLocalMemory V2 installed"
+compatibility: "Requires SuperLocalMemory installed"
 attribution:
   creator: Varun Pratap Bhardwaj
   role: Solution Architect & Original Creator
-  project: SuperLocalMemory V2
+  project: SuperLocalMemory
 ---
 ```
 

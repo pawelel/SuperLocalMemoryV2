@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LangChain Chat Message History Tests
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LangChain Chat Message History Tests
 
 Functional tests for SuperLocalMemoryChatMessageHistory.
 All tests use a temporary database -- the user's real memory is never touched.
 """
-
 import os
 import tempfile
 

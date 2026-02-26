@@ -32,11 +32,11 @@ Professional annotations highlighting key features (added for v2.5.0 release):
 ### 3. Connected Agents (`dashboard-agents-annotated.png`)
 **Annotations:**
 - **Agent trust scoring** - Arrow pointing to the Trust column showing agent reliability scores (1.00 = perfect trust)
-- **MCP/A2A support** - Box highlighting the protocol badges showing which communication protocol each agent uses
+- **MCP support** - Box highlighting the protocol badges showing which communication protocol each agent uses
 
 **Features shown:**
 - Agent registry with connection status
-- Protocol identification (MCP, Python, A2A)
+- Protocol identification (MCP, Python)
 - Trust scoring system (v2.5 silent collection, v2.6 enforcement)
 - Agent activity metrics (Writes, Recalls, Last Seen)
 - Signal breakdown showing agent behavior patterns

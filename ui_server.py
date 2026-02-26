@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Intelligent Local Memory System
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 SuperLocalMemory V2.5.0 - FastAPI UI Server
 App initialization, middleware, static mount, and router registration.
@@ -69,8 +59,6 @@ app.add_middleware(
         "http://127.0.0.1:8765",
         "http://localhost:8417",    # MCP
         "http://127.0.0.1:8417",
-        "http://localhost:8766",    # A2A (planned)
-        "http://127.0.0.1:8766",
     ],
     allow_credentials=True,
     allow_methods=["*"],

@@ -58,7 +58,6 @@ assets/
 
 **Naming convention:** `{feature}-{type}.mp4`
 - `installation-walkthrough.mp4`
-- `a2a-protocol-intro.mp4`
 - `dashboard-tour.mp4`
 
 **Specifications:**

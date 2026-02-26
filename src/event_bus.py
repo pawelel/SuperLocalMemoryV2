@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Event Bus
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 EventBus — Real-time event broadcasting for memory operations.
 
@@ -222,7 +212,7 @@ class EventBus:
             payload: Event-specific data (dict, serialized to JSON)
             memory_id: Associated memory ID (if applicable)
             source_agent: Agent that triggered the event
-            source_protocol: Protocol used (mcp, cli, rest, python, a2a)
+            source_protocol: Protocol used (mcp, cli, rest, python)
             importance: Event importance 1-10 (affects retention)
 
         Returns:

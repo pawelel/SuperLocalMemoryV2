@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Setup Validator
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Setup Validator
 
 First-run setup validator that ensures all dependencies are installed
 and the database is properly initialized.
 """
-
 import sys
 import os
 import sqlite3
@@ -41,9 +36,8 @@ def print_banner():
     """Print product banner."""
     print("""
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2 - Setup Validator                       ║
-║  by Varun Pratap Bhardwaj                                    ║
-║  https://github.com/varun369/SuperLocalMemoryV2              ║
+║  SuperLocalMemory - Setup Validator                          ║
+║  https://superlocalmemory.com                                ║
 ╚══════════════════════════════════════════════════════════════╝
 """)
 
@@ -338,8 +332,8 @@ def initialize_database() -> Tuple[bool, str]:
         # Add system watermark
         cursor.execute('''
             INSERT OR REPLACE INTO system_metadata (key, value) VALUES
-            ('product', 'SuperLocalMemory V2'),
-            ('author', 'Varun Pratap Bhardwaj'),
+            ('product', 'SuperLocalMemory'),
+            ('website', 'https://superlocalmemory.com'),
             ('repository', 'https://github.com/varun369/SuperLocalMemoryV2'),
             ('license', 'MIT'),
             ('schema_version', '2.0.0')

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Regression Tests (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Regression Tests (v2.7)
 
 Regression tests ensuring ALL existing functionality still works after v2.7
 changes. These tests verify backward compatibility with v2.6 behavior,
@@ -11,7 +10,6 @@ file integrity, and schema stability. All tests use temporary databases.
 Run with:
     pytest tests/test_regression_v27.py -v
 """
-
 import importlib
 import json
 import os

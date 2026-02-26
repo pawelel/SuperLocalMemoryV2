@@ -1,6 +1,6 @@
 # Advanced Search
 
-**SuperLocalMemory V2 finds what you mean, not just what you typed.** Search combines multiple signals simultaneously — the meaning behind your query, the exact words you used, and the web of connections between your memories — to surface the right result fast.
+**SuperLocalMemory finds what you mean, not just what you typed.** Search combines multiple signals simultaneously — the meaning behind your query, the exact words you used, and the web of connections between your memories — to surface the right result fast.
 
 ---
 
@@ -236,6 +236,6 @@ slm build-graph
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

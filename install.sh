@@ -164,6 +164,27 @@ if [ -d "${REPO_DIR}/src/learning" ]; then
     echo "✓ Learning modules copied"
 fi
 
+# Copy lifecycle modules (v2.8+)
+if [ -d "${REPO_DIR}/src/lifecycle" ]; then
+    mkdir -p "${INSTALL_DIR}/lifecycle"
+    cp -r "${REPO_DIR}/src/lifecycle/"* "${INSTALL_DIR}/lifecycle/"
+    echo "✓ Lifecycle modules copied"
+fi
+
+# Copy behavioral modules (v2.8+)
+if [ -d "${REPO_DIR}/src/behavioral" ]; then
+    mkdir -p "${INSTALL_DIR}/behavioral"
+    cp -r "${REPO_DIR}/src/behavioral/"* "${INSTALL_DIR}/behavioral/"
+    echo "✓ Behavioral modules copied"
+fi
+
+# Copy compliance modules (v2.8+)
+if [ -d "${REPO_DIR}/src/compliance" ]; then
+    mkdir -p "${INSTALL_DIR}/compliance"
+    cp -r "${REPO_DIR}/src/compliance/"* "${INSTALL_DIR}/compliance/"
+    echo "✓ Compliance modules copied"
+fi
+
 # Copy hooks
 echo "Copying hooks..."
 mkdir -p "${INSTALL_DIR}/hooks"
@@ -230,7 +251,40 @@ mkdir -p "${INSTALL_DIR}/profiles"
 mkdir -p "${INSTALL_DIR}/vectors"
 mkdir -p "${INSTALL_DIR}/cold-storage"
 mkdir -p "${INSTALL_DIR}/jobs"
+mkdir -p "${INSTALL_DIR}/policies"
 echo "✓ Directories created"
+
+# Initialize audit database (v2.8+ — compliance engine)
+if [ ! -f "${INSTALL_DIR}/audit.db" ]; then
+    python3 -c "
+import sqlite3
+from pathlib import Path
+audit_path = Path.home() / '.claude-memory' / 'audit.db'
+conn = sqlite3.connect(audit_path)
+cursor = conn.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS audit_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_type TEXT NOT NULL,
+    actor TEXT,
+    target TEXT,
+    action TEXT,
+    detail TEXT,
+    hash TEXT,
+    prev_hash TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS retention_policies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    policy_name TEXT UNIQUE NOT NULL,
+    retention_days INTEGER,
+    auto_delete INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)''')
+conn.commit()
+conn.close()
+print('Audit database ready')
+" 2>/dev/null && echo "✓ Audit database initialized (v2.8)" || echo "○ Audit database skipped (optional)"
+fi
 
 # Make Python scripts executable
 chmod +x "${INSTALL_DIR}/"*.py 2>/dev/null || true
@@ -798,6 +852,11 @@ echo ""
 echo "Learning System (v2.7+):"
 echo "  slm learning status              - Check learning system"
 echo "  slm engagement                   - View engagement metrics"
+echo ""
+echo "Lifecycle & Compliance (v2.8+):"
+echo "  slm lifecycle-status             - View memory lifecycle states"
+echo "  slm compact --dry-run            - Preview lifecycle transitions"
+echo "  slm behavioral-patterns          - View learned patterns"
 echo ""
 # Optional: Offer to install optional features
 if [ "$NON_INTERACTIVE" = true ]; then

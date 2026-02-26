@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Auto Backup System
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Auto Backup System
 
 Automated backup system for memory.db:
 - Configurable interval: 24h (daily) or 7 days (weekly, default)
@@ -13,7 +10,6 @@ Automated backup system for memory.db:
 - Auto-triggers on memory operations when backup is due
 - Manual backup via CLI
 """
-
 import sqlite3
 import shutil
 import json

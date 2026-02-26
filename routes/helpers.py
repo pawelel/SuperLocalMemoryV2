@@ -1,11 +1,11 @@
-"""
-SuperLocalMemory V2 - Route Helpers
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Route Helpers
+ — MIT License
 
 Shared utilities for all route modules: DB connection, dict factory,
 profile helper, validation, Pydantic models, config paths.
 """
-
 import re
 import json
 import sqlite3

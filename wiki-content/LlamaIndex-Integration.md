@@ -1,10 +1,10 @@
 # LlamaIndex Integration
 
-Use SuperLocalMemory V2 as a local-first chat store backend for LlamaIndex applications. All data stays on your machine — zero cloud calls, zero API keys for the memory layer.
+Use SuperLocalMemory as a local-first chat store backend for LlamaIndex applications. All data stays on your machine — zero cloud calls, zero API keys for the memory layer.
 
 ## Installation
 
-**Prerequisites:** SuperLocalMemory V2 installed (`npm install -g superlocalmemory` or `./install.sh`)
+**Prerequisites:** SuperLocalMemory installed (`npm install -g superlocalmemory` or `./install.sh`)
 
 ```bash
 pip install llama-index-storage-chat-store-superlocalmemory

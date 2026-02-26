@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Tests for WorkflowPatternMiner (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 import pytest
 
 

@@ -17,6 +17,12 @@ profiles.json
 *.log
 ui-server.log
 
+# Private research & strategy (NEVER include)
+.backup/
+
+# Benchmarks (development only)
+benchmarks/
+
 # Personal configuration
 CLAUDE.md
 

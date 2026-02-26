@@ -1,6 +1,6 @@
 # Real-Time Event System
 
-**SuperLocalMemory V2 notifies you the instant anything changes** — a memory saved from Cursor, a graph refresh triggered by Claude, an agent connecting from Windsurf. No polling, no page refreshes, no guesswork. Just a live stream of everything happening across your AI tools.
+**SuperLocalMemory notifies you the instant anything changes** — a memory saved from Cursor, a graph refresh triggered by Claude, an agent connecting from Windsurf. No polling, no page refreshes, no guesswork. Just a live stream of everything happening across your AI tools.
 
 **Keywords:** real-time events, live dashboard, event stream, agent monitoring, SSE, memory notifications, multi-tool sync
 
@@ -226,6 +226,6 @@ Connect to the SSE stream from a custom script. When a `memory_stored` event wit
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Report Issue](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

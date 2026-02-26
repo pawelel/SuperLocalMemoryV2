@@ -1,6 +1,6 @@
 {
   "name": "superlocalmemory",
-  "version": "2.7.6",
+  "version": "2.8.0",
   "description": "Your AI Finally Remembers You - Local-first intelligent memory system for AI assistants. Works with Claude, Cursor, Windsurf, VS Code/Copilot, Codex, and 17+ AI tools. 100% local, zero cloud dependencies.",
   "keywords": [
     "ai-memory",
@@ -94,13 +94,6 @@
       "url": "https://github.com/varun369"
     }
   ],
-  "attribution": {
-    "creator": "Varun Pratap Bhardwaj",
-    "role": "Solution Architect & Original Creator",
-    "year": "2026",
-    "github": "https://github.com/varun369",
-    "required": "Attribution notice must be preserved in all copies and derivative works"
-  },
   "dependencies": {
     "docx": "^9.5.1"
   }

@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Tests for SyntheticBootstrapper (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 import sqlite3
 from pathlib import Path
 
@@ -258,7 +254,7 @@ class TestGenerateSyntheticData:
             assert "label" in r
             assert "source" in r
             assert "features" in r
-            assert len(r["features"]) == 12  # 12-dimensional feature vector (v2.7.4)
+            assert len(r["features"]) == 20  # 20-dimensional feature vector (v2.8)
 
     def test_labels_in_range(self, bootstrapper_with_data):
         records = bootstrapper_with_data.generate_synthetic_training_data()

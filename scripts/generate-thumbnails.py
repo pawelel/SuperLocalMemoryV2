@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Thumbnail Generator
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Thumbnail Generator
 
 Generates optimized thumbnail versions of all screenshots.
 - Size: 320×180px (16:9 ratio)
@@ -10,7 +9,6 @@ Generates optimized thumbnail versions of all screenshots.
 - Quality: High enough to recognize content
 - File size: < 50KB per thumbnail
 """
-
 import os
 import json
 from pathlib import Path

@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LlamaIndex Chat Store Integration
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-"""
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 from llama_index.storage.chat_store.superlocalmemory.base import (
     SuperLocalMemoryChatStore,
 )

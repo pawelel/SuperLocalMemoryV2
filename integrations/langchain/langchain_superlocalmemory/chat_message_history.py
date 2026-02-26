@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LangChain Chat Message History
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LangChain Chat Message History
 
 Implements LangChain's BaseChatMessageHistory backed by SuperLocalMemory V2's
 local SQLite storage. All data stays on your machine -- zero cloud, zero telemetry.
@@ -14,7 +13,6 @@ Usage:
     history.add_messages([HumanMessage(content="Hello")])
     print(history.messages)
 """
-
 import json
 import sys
 from pathlib import Path
@@ -110,7 +108,7 @@ class SuperLocalMemoryChatMessageHistory(BaseChatMessageHistory):
     Each message is stored as an individual memory entry in the SLM SQLite
     database, tagged with the session ID for isolation.  This keeps the data
     fully local and queryable via any SLM access method (MCP, CLI, Skills,
-    REST API, A2A).
+    REST API).
 
     Parameters
     ----------

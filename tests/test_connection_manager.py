@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Connection Manager Tests
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Connection Manager Tests
 
 Hardcore test suite for db_connection_manager.py and the memory_store_v2.py refactor.
 Covers: unit tests, regression, edge cases, security, concurrency, new-user/Docker scenarios.
 """
-
 import sqlite3
 import sys
 import os

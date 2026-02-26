@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Cache Manager
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Cache Manager
 
-Copyright (c) 2026 Varun Pratap Bhardwaj
 Solution Architect & Original Creator
 
-Licensed under MIT License (see LICENSE file)
-Repository: https://github.com/varun369/SuperLocalMemoryV2
+ (see LICENSE file)
 
 ATTRIBUTION REQUIRED: This notice must be preserved in all copies.
 """
-
 """
 Cache Manager - LRU Cache for Search Results
 

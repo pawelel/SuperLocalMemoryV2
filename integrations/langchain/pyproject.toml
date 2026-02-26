@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "langchain-superlocalmemory"
 version = "0.1.0"
-description = "LangChain chat message history backed by SuperLocalMemory V2 — 100% local, zero cloud"
+description = "LangChain chat message history backed by SuperLocalMemory — 100% local, zero cloud"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"

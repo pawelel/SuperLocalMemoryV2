@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "llama-index-storage-chat-store-superlocalmemory"
 version = "0.1.0"
-description = "LlamaIndex chat store backed by SuperLocalMemory V2 — 100% local, zero cloud"
+description = "LlamaIndex chat store backed by SuperLocalMemory — 100% local, zero cloud"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"

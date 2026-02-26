@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="SuperLocalMemory V2" width="96"/>
+  <img src="https://superlocalmemory.com/assets/logo-mark.png" alt="SuperLocalMemory" width="96"/>
 </p>
 
-# SuperLocalMemory V2
+# SuperLocalMemory
 
 <p align="center">
   <strong>Your AI Finally Remembers You</strong><br/>
@@ -20,8 +20,17 @@
 
 ## Visual Overview
 
-![SuperLocalMemory V2 Features](https://superlocalmemory.com/assets/contact-sheet.png)
-*All SuperLocalMemory V2 features at a glance: Dashboard, CLI, Live Events, Agents, Knowledge Graph*
+![SuperLocalMemory Features](https://superlocalmemory.com/assets/contact-sheet.png)
+*All SuperLocalMemory features at a glance: Dashboard, CLI, Live Events, Agents, Knowledge Graph*
+
+---
+
+## 🆕 What's New in v2.8
+
+- **[[Memory-Lifecycle|Memory Lifecycle Management]]** — Memories automatically manage themselves
+- **[[Behavioral-Learning|Behavioral Learning]]** — Your AI learns from action outcomes
+- **[[Enterprise-Compliance|Enterprise Compliance]]** — Access control, audit trails, retention policies
+- **[[Upgrading-to-v2.8|Upgrade Guide]]** — Drop-in upgrade, full backward compatibility
 
 ---
 
@@ -59,13 +68,13 @@
 
 ## 🎯 What is SuperLocalMemory?
 
-SuperLocalMemory V2 is an **intelligent ai memory system** that makes AI assistants like Claude, Cursor, and other mcp-server compatible tools remember everything about you and your projects. Created by **Varun Pratap Bhardwaj**, this local-first memory solution is the perfect alternative to Mem0 and Zep. Unlike cloud-based alternatives like Mem0 ($50+/mo) or Zep ($50/mo), SuperLocalMemory is:
+SuperLocalMemory is an **intelligent ai memory system** that makes AI assistants like Claude, Cursor, and other mcp-server compatible tools remember everything about you and your projects. Created by **Varun Pratap Bhardwaj**, this local-first memory solution is the perfect alternative to Mem0 and Zep. Unlike cloud-based alternatives like Mem0 ($50+/mo) or Zep ($50/mo), SuperLocalMemory is:
 
 - **100% Local** — Your data never leaves your machine
 - **100% Free** — No usage limits, no credit systems, forever
 - **100% Private** — GDPR/HIPAA compliant by default
 - **Works Everywhere** — 17+ IDEs including Claude Desktop, Cursor IDE, Windsurf, VS Code, and more
-- **Dual Protocol** — MCP (agent→tool) + A2A (agent↔agent) support
+- **MCP Protocol** — Native Model Context Protocol integration for 17+ IDEs
 
 ---
 
@@ -105,7 +114,7 @@ SuperLocalMemory V2 is an **intelligent ai memory system** that makes AI assista
 ### Core Concepts
 | Guide | Description |
 |-------|-------------|
-| [[Universal-Architecture]] | Universal architecture with MCP + A2A integration |
+| [[Universal-Architecture]] | Universal architecture with MCP integration |
 | [[MCP-Integration]] | Model Context Protocol support for 17+ IDEs |
 | [[Universal-Skills]] | 7 agent skills and slash-commands system |
 | [[Knowledge-Graph-Guide]] | Auto-discovery of relationships |
@@ -163,19 +172,18 @@ superlocalmemoryv2:recall "auth bug"
 
 ## 🆚 Alternative to Mem0 and Zep
 
-| Feature | Mem0 | Zep | Personal.AI | **SuperLocalMemory V2** |
+| Feature | Mem0 | Zep | Personal.AI | **SuperLocalMemory** |
 |---------|------|-----|-------------|---------------------|
 | **Price** | Usage-based | $50/mo | $33/mo | **$0 forever** |
 | **Local-First** | ❌ Cloud | ❌ Cloud | ❌ Cloud | **✅ 100%** |
 | **IDE Support** | Limited | 1-2 | None | **✅ 17+ IDEs** |
 | **Universal Architecture** | ❌ | ❌ | ❌ | **✅ MCP + Skills + CLI** |
 | **MCP Integration** | ❌ | ❌ | ❌ | **✅ Native** |
-| **A2A Protocol** | ❌ | ❌ | ❌ | **🔜 v2.8** |
 | **Pattern Learning** | ❌ | ❌ | Partial | **✅ Full** |
 | **Knowledge Graphs** | ✅ | ✅ | ❌ | **✅ Leiden Clustering** |
 | **Zero Setup** | ❌ | ❌ | ❌ | **✅ 5-min install** |
 
-**SuperLocalMemory V2 is the ONLY solution with universal IDE support, full local operation, and zero cost.** Created by **Varun Pratap Bhardwaj** as an open-source alternative to expensive cloud services.
+**SuperLocalMemory is the ONLY solution with universal IDE support, full local operation, and zero cost.** Created by **Varun Pratap Bhardwaj** as an open-source alternative to expensive cloud services.
 
 ---
 
@@ -222,7 +230,7 @@ SuperLocalMemory implements cutting-edge 2026 research:
 
 [![GitHub](https://img.shields.io/badge/GitHub-@varun369-181717?style=flat-square&logo=github)](https://github.com/varun369)
 
-Building open-source tools that make AI assistants actually useful for developers. SuperLocalMemory V2.3.0 brings universal integration to 17+ IDEs while maintaining 100% local-first privacy.
+Building open-source tools that make AI assistants actually useful for developers. SuperLocalMemory v2.3.0 brings universal integration to 17+ IDEs while maintaining 100% local-first privacy.
 
 ---
 

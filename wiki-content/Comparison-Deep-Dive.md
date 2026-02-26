@@ -8,7 +8,7 @@
 
 | Solution | Best For | Pricing | Privacy | Setup Time |
 |----------|----------|---------|---------|------------|
-| **SuperLocalMemory V2** | Developers who want full control | **Free forever** | **100% local** | **5 min** |
+| **SuperLocalMemory** | Developers who want full control | **Free forever** | **100% local** | **5 min** |
 | **Mem0** | Teams needing managed service | $99-999/mo | Cloud-only | 10 min |
 | **Zep** | Enterprise with budget | $50-500/mo | Cloud-only | 15 min |
 | **Personal.AI** | Non-technical users | $33/mo | Cloud-only | 5 min |
@@ -21,7 +21,7 @@
 
 ### Core Features
 
-| Feature | SuperLocalMemory V2 | Mem0 | Zep | Khoj | Letta | Personal.AI |
+| Feature | SuperLocalMemory | Mem0 | Zep | Khoj | Letta | Personal.AI |
 |---------|---------------------|------|-----|------|-------|-------------|
 | **Semantic Search** | ✅ Local | ✅ Cloud embeddings | ✅ Cloud embeddings | ✅ Cloud embeddings | ✅ | ✅ |
 | **Full-Text Search** | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
@@ -35,7 +35,7 @@
 
 ### Integration & Access
 
-| Feature | SuperLocalMemory V2 | Mem0 | Zep | Khoj | Letta | Personal.AI |
+| Feature | SuperLocalMemory | Mem0 | Zep | Khoj | Letta | Personal.AI |
 |---------|---------------------|------|-----|------|-------|-------------|
 | **Cursor** | ✅ MCP native | ⚠️ API only | ❌ | ❌ | ❌ | ❌ |
 | **Windsurf** | ✅ MCP native | ⚠️ API only | ❌ | ❌ | ❌ | ❌ |
@@ -49,7 +49,7 @@
 
 ### Privacy & Security
 
-| Feature | SuperLocalMemory V2 | Mem0 | Zep | Khoj | Letta | Personal.AI |
+| Feature | SuperLocalMemory | Mem0 | Zep | Khoj | Letta | Personal.AI |
 |---------|---------------------|------|-----|------|-------|-------------|
 | **100% Local** | ✅ | ❌ | ❌ | ⚠️ Partial | ✅ | ❌ |
 | **No External API** | ✅ | ❌ | ❌ | ⚠️ Optional | ✅ | ❌ |
@@ -61,7 +61,7 @@
 
 ### Performance
 
-| Metric | SuperLocalMemory V2 | Mem0 | Zep | Khoj | Letta |
+| Metric | SuperLocalMemory | Mem0 | Zep | Khoj | Letta |
 |--------|---------------------|------|-----|------|-------|
 | **Search Latency** | Sub-100ms (typical use) | Cloud-dependent | Cloud-dependent | Cloud-dependent | Local |
 | **Offline Capable** | **✅ Yes** | ❌ No | ❌ No | ⚠️ Partial | ✅ Yes |
@@ -73,7 +73,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 
 ## Pricing Deep Dive
 
-### SuperLocalMemory V2
+### SuperLocalMemory
 
 **Cost:** **$0 forever**
 
@@ -127,7 +127,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Team: **$17,940**
 - Enterprise: **$59,940+**
 
-**SuperLocalMemory V2 saves:** $5,940 - $59,940 over 5 years
+**SuperLocalMemory saves:** $5,940 - $59,940 over 5 years
 
 ---
 
@@ -148,7 +148,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Pro: **$12,000**
 - Enterprise: **$30,000+**
 
-**SuperLocalMemory V2 saves:** $3,000 - $30,000+ over 5 years
+**SuperLocalMemory saves:** $3,000 - $30,000+ over 5 years
 
 ---
 
@@ -163,7 +163,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Personal: **$1,980**
 - Professional: **$5,940**
 
-**SuperLocalMemory V2 saves:** $1,980 - $5,940 over 5 years
+**SuperLocalMemory saves:** $1,980 - $5,940 over 5 years
 
 ---
 
@@ -193,7 +193,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Limited documentation
 - No IDE integrations
 
-**SuperLocalMemory V2 advantage:** Production-ready, 5-min setup, 11+ IDE integrations
+**SuperLocalMemory advantage:** Production-ready, 5-min setup, 11+ IDE integrations
 
 ---
 
@@ -207,7 +207,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Privacy-conscious
 - Budget-conscious
 
-**Best choice: SuperLocalMemory V2**
+**Best choice: SuperLocalMemory**
 
 **Why:**
 - Free forever (no budget impact)
@@ -230,7 +230,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Cost-sensitive (pre-revenue)
 - Need API access
 
-**Best choice: SuperLocalMemory V2 + Git**
+**Best choice: SuperLocalMemory + Git**
 
 **Why:**
 - $0/month (critical for early stage)
@@ -255,7 +255,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Privacy guarantees
 - Offline capable
 
-**Best choice: SuperLocalMemory V2**
+**Best choice: SuperLocalMemory**
 
 **Why:**
 - Unlimited profiles (one per client)
@@ -273,7 +273,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - Air-gap capable
 - Audit trail
 
-**Best choice: SuperLocalMemory V2**
+**Best choice: SuperLocalMemory**
 
 **Why:**
 - 100% on-premise
@@ -299,7 +299,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 - SLA guarantees
 - Better for large-scale cloud deployments
 
-**SuperLocalMemory V2 alternative:**
+**SuperLocalMemory alternative:**
 - Deploy per-engineer (works well)
 - Team profiles via git
 - Self-managed but $0 cost
@@ -309,7 +309,7 @@ Performance measurements are based on peer-reviewed research. See our published 
 
 ## Migration Guides
 
-### From Mem0 to SuperLocalMemory V2
+### From Mem0 to SuperLocalMemory
 
 **Step 1: Export from Mem0**
 ```python
@@ -325,7 +325,7 @@ with open('mem0_export.json', 'w') as f:
     json.dump(memories, f)
 ```
 
-**Step 2: Import to SuperLocalMemory V2**
+**Step 2: Import to SuperLocalMemory**
 ```python
 import sys, json
 sys.path.append('/Users/YOUR_USERNAME/.claude-memory/')
@@ -353,7 +353,7 @@ slm build-graph --clustering
 
 ---
 
-### From Zep to SuperLocalMemory V2
+### From Zep to SuperLocalMemory
 
 **Step 1: Export from Zep**
 ```python
@@ -373,7 +373,7 @@ with open('zep_export.json', 'w') as f:
     json.dump([m.dict() for m in memories], f)
 ```
 
-**Step 2: Import to SuperLocalMemory V2**
+**Step 2: Import to SuperLocalMemory**
 ```python
 import sys, json
 sys.path.append('/Users/YOUR_USERNAME/.claude-memory/')
@@ -396,13 +396,13 @@ for mem in memories:
 
 ## Feature Gaps & Workarounds
 
-### What SuperLocalMemory V2 Lacks (vs Cloud Solutions)
+### What SuperLocalMemory Lacks (vs Cloud Solutions)
 
 #### 1. Advanced Embeddings
 
 **Cloud solutions:** Use OpenAI/Anthropic embeddings (expensive but high-quality)
 
-**SuperLocalMemory V2:** Uses local vector search (free, fast, good-enough for most cases)
+**SuperLocalMemory:** Uses local vector search (free, fast, good-enough for most cases)
 
 **Workaround:** Planned v2.3.0 - optional enhanced embeddings integration
 
@@ -410,7 +410,7 @@ for mem in memories:
 
 **Cloud solutions:** Multiple users update same memory store in real-time
 
-**SuperLocalMemory V2:** Git-based collaboration (async)
+**SuperLocalMemory:** Git-based collaboration (async)
 
 **Workaround:** Use profiles + git push/pull
 
@@ -418,7 +418,7 @@ for mem in memories:
 
 **Cloud solutions:** Zero ops, always available
 
-**SuperLocalMemory V2:** Self-managed (but also zero ops for single user)
+**SuperLocalMemory:** Self-managed (but also zero ops for single user)
 
 **Workaround:** Docker container (planned v2.2.0)
 
@@ -426,7 +426,7 @@ for mem in memories:
 
 ## When to Choose Each Solution
 
-### Choose SuperLocalMemory V2 if:
+### Choose SuperLocalMemory if:
 
 ✅ You want **100% privacy** (no cloud)
 ✅ You want **$0 cost** (forever)
@@ -468,7 +468,7 @@ for mem in memories:
 
 ## Related Pages
 
-- [Quick Start Tutorial](Quick-Start-Tutorial) - Get started with SuperLocalMemory V2
+- [Quick Start Tutorial](Quick-Start-Tutorial) - Get started with SuperLocalMemory
 - [Why Local Matters](Why-Local-Matters) - Privacy benefits
 - [Roadmap](Roadmap) - Upcoming features
 - [CLI Cheatsheet](CLI-Cheatsheet) - Command reference
@@ -476,6 +476,6 @@ for mem in memories:
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Issues](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

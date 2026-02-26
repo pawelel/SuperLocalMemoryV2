@@ -1,6 +1,6 @@
 # MCP Integration
 
-SuperLocalMemory V2.1.0 includes a universal **mcp-server** that provides native integration with 17+ IDEs including Claude Desktop, Cursor IDE, Windsurf, and more. This local-first, mcp-protocol based integration enables AI assistants to naturally access your memory system without manual commands.
+SuperLocalMemory v2.1.0 includes a universal **mcp-server** that provides native integration with 17+ IDEs including Claude Desktop, Cursor IDE, Windsurf, and more. This local-first, mcp-protocol based integration enables AI assistants to naturally access your memory system without manual commands.
 
 **Keywords:** mcp-server, claude-desktop, cursor-ide, windsurf, universal-integration, model-context-protocol
 
@@ -357,7 +357,7 @@ You should see your IDE listed as a connected MCP client:
 *Figure: Dashboard showing MCP client connected with trust score 1.00*
 
 **Key indicators:**
-- **Protocol:** Shows `MCP` (agent-to-tool) or `A2A` (agent-to-agent)
+- **Protocol:** Shows `MCP` (agent-to-tool)
 - **Trust Score:** Starts at 1.00 (full trust)
 - **Last Seen:** Recent timestamp means active connection
 - **Memory Operations:** Count of remember/recall calls this session

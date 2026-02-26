@@ -1,11 +1,11 @@
-"""
-SuperLocalMemory V2 - Agent Registry + Trust Routes (v2.5)
-Copyright (c) 2026 Varun Pratap Bhardwaj — MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - Agent Registry + Trust Routes (v2.5)
+ — MIT License
 
 Routes: /api/agents, /api/agents/stats, /api/trust/stats, /api/trust/signals/{agent_id}
 Progressive enhancement: routes return empty data if agent registry is unavailable.
 """
-
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query

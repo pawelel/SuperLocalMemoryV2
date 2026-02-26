@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-"""
-HNSWIndex - Fast Approximate Nearest Neighbor Search for SuperLocalMemory V2
-
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-Repository: https://github.com/varun369/SuperLocalMemoryV2
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""HNSWIndex - Fast Approximate Nearest Neighbor Search for SuperLocalMemory V2
 
 Implements HNSW (Hierarchical Navigable Small World) algorithm for:
 - Sub-10ms vector similarity search for 10K+ memories
@@ -19,7 +16,6 @@ LIMITS:
 - MAX_DIMENSION: 5000 (typical: 384 for sentence embeddings)
 - Performance target: <10ms for 10K memories, <50ms for 100K memories
 """
-
 # SECURITY: HNSW index limits to prevent resource exhaustion
 MAX_MEMORIES_FOR_HNSW = 100_000
 MAX_DIMENSION = 5000

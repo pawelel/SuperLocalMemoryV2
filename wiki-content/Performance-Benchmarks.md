@@ -1,6 +1,6 @@
 # Performance Benchmarks
 
-Measured performance of SuperLocalMemory V2 on real hardware. Results reflect real-world use cases.
+Measured performance of SuperLocalMemory on real hardware. Results reflect real-world use cases.
 
 ---
 

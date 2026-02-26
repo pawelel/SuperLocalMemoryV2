@@ -1,6 +1,6 @@
 # Visualization Dashboard
 
-**Interactive web-based dashboard for exploring SuperLocalMemory V2.2.0 visually** - Timeline views, semantic search explorer, knowledge graph visualization, and real-time analytics.
+**Interactive web-based dashboard for exploring SuperLocalMemory v2.2.0 visually** - Timeline views, semantic search explorer, knowledge graph visualization, and real-time analytics.
 
 **Keywords:** visualization dashboard, web UI, timeline view, search explorer, graph visualization, memory analytics, interactive dashboard
 
@@ -64,7 +64,7 @@ python ~/.claude-memory/ui_server.py
 **Expected output:**
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SuperLocalMemory V2.2.0 - Visualization Dashboard           ║
+║  SuperLocalMemory v2.2.0 - Visualization Dashboard           ║
 ╚══════════════════════════════════════════════════════════════╝
 
 ✓ Database loaded: 523 memories
@@ -1124,6 +1124,6 @@ python ~/.claude-memory/ui_server.py
 ---
 
 **Created by Varun Pratap Bhardwaj**
-*Solution Architect • SuperLocalMemory V2*
+*Solution Architect • SuperLocalMemory*
 
 [GitHub](https://github.com/varun369/SuperLocalMemoryV2) • [Report Issue](https://github.com/varun369/SuperLocalMemoryV2/issues) • [Wiki](https://github.com/varun369/SuperLocalMemoryV2/wiki)

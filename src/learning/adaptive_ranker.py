@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Adaptive Ranker (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 AdaptiveRanker — Three-phase adaptive re-ranking engine.
 
@@ -105,6 +95,16 @@ _RULE_BOOST = {
     'recency_penalty_max': 0.8,    # Old memory (> 365 days)
     'high_importance': 1.15,       # Importance >= 8
     'high_access': 1.1,            # Accessed 5+ times
+    # v2.8: Lifecycle + behavioral boosts
+    'lifecycle_active': 1.0,
+    'lifecycle_warm': 0.85,
+    'lifecycle_cold': 0.6,
+    'outcome_success_high': 1.3,
+    'outcome_failure_high': 0.7,
+    'behavioral_match_strong': 1.25,
+    'cross_project_boost': 1.15,
+    'high_trust_creator': 1.1,
+    'low_trust_creator': 0.8,
 }
 
 # LightGBM training parameters — tuned for small, personal datasets
@@ -431,6 +431,44 @@ class AdaptiveRanker:
                     boost *= 1.15  # Boost memories with positive feedback
                 elif avg_signal < 0.3 and avg_signal > 0.0:
                     boost *= 0.85  # Penalize memories with negative feedback
+
+            # Feature [12]: lifecycle_state (v2.8)
+            if len(features) > 12:
+                lifecycle_state = features[12]
+                if lifecycle_state >= 0.9:
+                    boost *= _RULE_BOOST.get('lifecycle_active', 1.0)
+                elif lifecycle_state >= 0.6:
+                    boost *= _RULE_BOOST.get('lifecycle_warm', 0.85)
+                elif lifecycle_state >= 0.3:
+                    boost *= _RULE_BOOST.get('lifecycle_cold', 0.6)
+
+            # Feature [13]: outcome_success_rate (v2.8)
+            if len(features) > 13:
+                success_rate = features[13]
+                if success_rate >= 0.8:
+                    boost *= _RULE_BOOST.get('outcome_success_high', 1.3)
+                elif success_rate <= 0.2:
+                    boost *= _RULE_BOOST.get('outcome_failure_high', 0.7)
+
+            # Feature [15]: behavioral_match (v2.8)
+            if len(features) > 15:
+                behavioral = features[15]
+                if behavioral >= 0.7:
+                    boost *= _RULE_BOOST.get('behavioral_match_strong', 1.25)
+
+            # Feature [16]: cross_project_score (v2.8)
+            if len(features) > 16:
+                cross_project = features[16]
+                if cross_project >= 0.5:
+                    boost *= _RULE_BOOST.get('cross_project_boost', 1.15)
+
+            # Feature [18]: trust_at_creation (v2.8)
+            if len(features) > 18:
+                trust = features[18]
+                if trust >= 0.9:
+                    boost *= _RULE_BOOST.get('high_trust_creator', 1.1)
+                elif trust <= 0.3:
+                    boost *= _RULE_BOOST.get('low_trust_creator', 0.8)
 
             # Apply boost to score
             result['score'] = base_score * boost

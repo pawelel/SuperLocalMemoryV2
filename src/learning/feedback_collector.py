@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - Feedback Collector (v2.7)
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
-
-Repository: https://github.com/varun369/SuperLocalMemoryV2
-Author: Varun Pratap Bhardwaj (Solution Architect)
-
-NOTICE: This software is protected by MIT License.
-Attribution must be preserved in all copies or derivatives.
-"""
-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
 """
 FeedbackCollector -- Multi-channel feedback collection for the LightGBM re-ranker.
 
@@ -120,6 +110,11 @@ class FeedbackCollector:
         "implicit_negative_post_delete": 0.0,
         "implicit_positive_cross_tool": 0.8,
         "passive_decay": 0.0,
+        # v2.8.0: Outcome-based signals from behavioral learning
+        "outcome_success": 1.0,
+        "outcome_partial": 0.5,
+        "outcome_failure": 0.0,
+        "outcome_retry": 0.2,
     }
 
     # Usefulness string -> signal type mapping

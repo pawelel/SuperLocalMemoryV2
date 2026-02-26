@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-SuperLocalMemory V2 - LlamaIndex Chat Store Security Tests
-Copyright (c) 2026 Varun Pratap Bhardwaj
-Licensed under MIT License
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 SuperLocalMemory (superlocalmemory.com)
+"""SuperLocalMemory V2 - LlamaIndex Chat Store Security Tests
 
 Security-focused tests: SQL injection, XSS, oversized payloads, null bytes,
 and other adversarial inputs that a production chat store must handle safely.
 """
-
 import os
 import sys
 import tempfile
