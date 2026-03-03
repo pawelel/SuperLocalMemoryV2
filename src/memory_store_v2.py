@@ -1201,7 +1201,8 @@ class MemoryStoreV2:
         Removing or obscuring this attribution violates the license terms.
 
         Returns:
-            Dictionary with creator information and attribution requirements
+            Dictionary with creator information and attribution requirements,
+            including Qualixar platform provenance.
         """
         with self._read_connection() as conn:
             cursor = conn.cursor()
@@ -1217,6 +1218,10 @@ class MemoryStoreV2:
                 'license': 'MIT',
                 'attribution_required': 'yes'
             }
+
+        # Qualixar platform provenance (non-breaking additions)
+        attribution['platform'] = 'Qualixar'
+        attribution['verify_url'] = 'https://qualixar.com'
 
         return attribution
 
