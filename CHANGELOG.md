@@ -16,6 +16,23 @@ SuperLocalMemory V2 - Intelligent local memory system for AI coding assistants.
 
 ---
 
+## [2.8.3] - 2026-03-05
+
+### Fixed
+- Windows installation and cross-platform compatibility
+- Database stability under concurrent usage
+- Forward compatibility with latest Python versions
+
+### Added
+- Full Windows support with PowerShell scripts for all operations
+- `slm attribution` command for license and creator information
+
+### Improved
+- Overall reliability and code quality
+- Dependency management for reproducible installs
+
+---
+
 ## [2.8.2] - 2026-03-04
 
 ### Fixed

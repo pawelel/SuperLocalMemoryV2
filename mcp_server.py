@@ -71,6 +71,26 @@ try:
 except ImportError:
     TRUST_AVAILABLE = False
 
+# Qualixar Attribution (v2.8.3 — 3-layer provenance)
+try:
+    from qualixar_attribution import QualixarSigner
+    from qualixar_watermark import encode_watermark
+    _signer = QualixarSigner("superlocalmemory", "2.8.3")
+    ATTRIBUTION_AVAILABLE = True
+except ImportError:
+    _signer = None
+    ATTRIBUTION_AVAILABLE = False
+
+
+def _sign_response(response: dict) -> dict:
+    """Apply Layer 2 cryptographic signing to MCP tool responses."""
+    if _signer and isinstance(response, dict):
+        try:
+            return _signer.sign(response)
+        except Exception:
+            pass
+    return response
+
 # Learning System (v2.7+)
 try:
     sys.path.insert(0, str(Path(__file__).parent / "src"))
@@ -223,7 +243,7 @@ _agent_registry = None
 _provenance_tracker = None
 
 
-def get_agent_registry():
+def get_agent_registry() -> Optional[Any]:
     """Get shared AgentRegistry singleton (v2.5+). Returns None if unavailable."""
     global _agent_registry
     if not PROVENANCE_AVAILABLE:
@@ -233,7 +253,7 @@ def get_agent_registry():
     return _agent_registry
 
 
-def get_provenance_tracker():
+def get_provenance_tracker() -> Optional[Any]:
     """Get shared ProvenanceTracker singleton (v2.5+). Returns None if unavailable."""
     global _provenance_tracker
     if not PROVENANCE_AVAILABLE:
@@ -246,7 +266,7 @@ def get_provenance_tracker():
 _trust_scorer = None
 
 
-def get_trust_scorer():
+def get_trust_scorer() -> Optional[Any]:
     """Get shared TrustScorer singleton (v2.6+). Returns None if unavailable."""
     global _trust_scorer
     if not TRUST_AVAILABLE:
@@ -719,7 +739,7 @@ async def remember(
         # Format response
         preview = content[:100] + "..." if len(content) > 100 else content
 
-        return {
+        return _sign_response({
             "success": True,
             "memory_id": memory_id,
             "message": f"Memory saved with ID {memory_id}",
@@ -850,7 +870,7 @@ async def recall(
         # Filter by minimum score
         filtered_results = [r for r in results if r.get("score", 0) >= min_score]
 
-        return {
+        return _sign_response({
             "success": True,
             "query": query,
             "results": filtered_results,
@@ -1734,6 +1754,54 @@ async def project_context_prompt(project_name: str) -> str:
 # SERVER STARTUP
 # ============================================================================
 
+@mcp.tool(annotations=ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    openWorldHint=False,
+))
+async def get_attribution() -> dict:
+    """
+    Get creator attribution and provenance verification for SuperLocalMemory.
+
+    Returns creator information, license details, and verification status
+    for the 3-layer Qualixar attribution system.
+
+    Returns:
+        {
+            "creator": str,
+            "license": str,
+            "platform": str,
+            "layers": {
+                "visible": bool,
+                "cryptographic": bool,
+                "steganographic": bool
+            }
+        }
+    """
+    try:
+        store = get_store()
+        attribution = store.get_attribution()
+
+        return _sign_response({
+            "success": True,
+            **attribution,
+            "website": "https://superlocalmemory.com",
+            "author_website": "https://varunpratap.com",
+            "attribution_layers": {
+                "layer1_visible": True,
+                "layer2_cryptographic": ATTRIBUTION_AVAILABLE,
+                "layer3_steganographic": ATTRIBUTION_AVAILABLE,
+            },
+        })
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": _sanitize_error(e),
+            "message": "Failed to get attribution"
+        }
+
+
 if __name__ == "__main__":
     import argparse
 
@@ -1756,7 +1824,7 @@ if __name__ == "__main__":
     # Print startup message to stderr (stdout is used for MCP protocol)
     print("=" * 60, file=sys.stderr)
     print("SuperLocalMemory V2 - MCP Server", file=sys.stderr)
-    print("Version: 2.7.4", file=sys.stderr)
+    print("Version: 2.8.3", file=sys.stderr)
     print("=" * 60, file=sys.stderr)
     print("Created by: Varun Pratap Bhardwaj (Solution Architect)", file=sys.stderr)
     print("Repository: https://github.com/varun369/SuperLocalMemoryV2", file=sys.stderr)

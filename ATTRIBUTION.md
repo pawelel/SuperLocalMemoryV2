@@ -38,7 +38,7 @@ is_valid = QualixarSigner.verify(signed_output)
 
 ### Research Initiative
 
-Qualixar is a research platform for AI agent development tools. SuperLocalMemory is one of several research initiatives under the Qualixar umbrella. For more information, visit qualixar.com.
+Qualixar is a research initiative for AI agent development tools by Varun Pratap Bhardwaj. SuperLocalMemory is one of several research initiatives under the Qualixar umbrella.
 
 ### Third-Party Acknowledgments
 
