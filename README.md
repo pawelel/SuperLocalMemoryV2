@@ -14,6 +14,7 @@
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2603.02240"><img src="https://img.shields.io/badge/arXiv-2603.02240-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv"/></a>
   <a href="https://zenodo.org/records/18709670"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18709670-blue?style=for-the-badge&logo=doi&logoColor=white" alt="DOI"/></a>
   <a href="https://zenodo.org/records/18709670"><img src="https://img.shields.io/badge/Zenodo-Research_Paper-1682D4?style=for-the-badge&logo=zenodo&logoColor=white" alt="Zenodo"/></a>
   <a href="https://www.researchgate.net/publication/400976053"><img src="https://img.shields.io/badge/ResearchGate-Paper-00CCBB?style=for-the-badge&logo=researchgate&logoColor=white" alt="ResearchGate"/></a>
@@ -55,21 +56,22 @@ The paper presents SuperLocalMemory's architecture for defending against OWASP A
 
 | Platform | Link |
 |----------|------|
+| **arXiv** | [arXiv:2603.02240](https://arxiv.org/abs/2603.02240) |
 | **Zenodo** (CERN) | [DOI: 10.5281/zenodo.18709670](https://zenodo.org/records/18709670) |
 | **ResearchGate** | [Publication Page](https://www.researchgate.net/publication/400976053) |
-| **arXiv** | Submission under review |
 | **Research Portfolio** | [superlocalmemory.com/research](https://superlocalmemory.com/research) |
 
 If you use SuperLocalMemory in your research, please cite:
 
 ```bibtex
-@misc{bhardwaj2026superlocalmemory,
+@article{bhardwaj2026superlocalmemory,
   title={SuperLocalMemory: Privacy-Preserving Multi-Agent Memory with Bayesian Trust Defense Against Memory Poisoning},
   author={Bhardwaj, Varun Pratap},
   year={2026},
-  doi={10.5281/zenodo.18709670},
-  url={https://zenodo.org/records/18709670},
-  note={Preprint}
+  eprint={2603.02240},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2603.02240}
 }
 ```
 
@@ -201,10 +203,10 @@ You: *sighs and explains everything again*
 npm install -g superlocalmemory
 
 # Save a memory
-superlocalmemoryv2:remember "Fixed auth bug - JWT tokens were expiring too fast, increased to 24h"
+superlocalmemoryv2-remember "Fixed auth bug - JWT tokens were expiring too fast, increased to 24h"
 
 # Later, in a new session...
-superlocalmemoryv2:recall "auth bug"
+superlocalmemoryv2-recall "auth bug"
 # ✓ Found: "Fixed auth bug - JWT tokens were expiring too fast, increased to 24h"
 ```
 
@@ -230,7 +232,7 @@ Both methods auto-detect and configure **17+ IDEs and AI tools** — Cursor, VS 
 ### Verify Installation
 
 ```bash
-superlocalmemoryv2:status
+superlocalmemoryv2-status
 # ✓ Database: OK (0 memories)
 # ✓ Graph: Ready
 # ✓ Patterns: Ready
@@ -343,7 +345,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
 
 | Tool | Integration | How It Works |
 |------|-------------|--------------|
-| **Claude Code** | ✅ Skills + MCP | `/superlocalmemoryv2:remember` |
+| **Claude Code** | ✅ Skills + MCP | `/superlocalmemoryv2-remember` |
 | **Cursor** | ✅ MCP + Skills | AI uses memory tools natively |
 | **Windsurf** | ✅ MCP + Skills | Native memory access |
 | **Claude Desktop** | ✅ MCP | Built-in support |
@@ -365,7 +367,7 @@ Not another simple key-value store. SuperLocalMemory implements **cutting-edge m
    - "Remember that we use this framework" just works
 
 2. **Skills & Commands** — For Claude Code, Continue.dev, Cody
-   - `/superlocalmemoryv2:remember` in Claude Code
+   - `/superlocalmemoryv2-remember` in Claude Code
    - `/slm-remember` in Continue.dev and Cody
    - Familiar slash command interface
 
@@ -466,15 +468,15 @@ Auto-clustering discovers 6-7 natural topic communities from your memories.
 
 ```bash
 # Memory Operations
-superlocalmemoryv2:remember "content" --tags tag1,tag2  # Save memory
-superlocalmemoryv2:recall "search query"                 # Search
-superlocalmemoryv2:list                                  # Recent memories
-superlocalmemoryv2:status                                # System health
+superlocalmemoryv2-remember "content" --tags tag1,tag2  # Save memory
+superlocalmemoryv2-recall "search query"                 # Search
+superlocalmemoryv2-list                                  # Recent memories
+superlocalmemoryv2-status                                # System health
 
 # Profile Management
-superlocalmemoryv2:profile list                          # Show all profiles
-superlocalmemoryv2:profile create <name>                 # New profile
-superlocalmemoryv2:profile switch <name>                 # Switch context
+superlocalmemoryv2-profile list                          # Show all profiles
+superlocalmemoryv2-profile create <name>                 # New profile
+superlocalmemoryv2-profile switch <name>                 # Switch context
 
 # Knowledge Graph
 python ~/.claude-memory/graph_engine.py build            # Build graph

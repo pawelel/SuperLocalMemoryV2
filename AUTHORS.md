@@ -1,14 +1,15 @@
 # Authors
 
-## Organization
+## Research Initiative
 
-**Qualixar** — The Complete Agent Development Platform
+**Qualixar** — Advancing Agent Development Through Research
 
-SuperLocalMemory is a Qualixar product.
+SuperLocalMemory is a Qualixar research initiative.
 
 ## Creator
 
-Varun Pratap Bhardwaj ([@varun369](https://github.com/varun369)) — Founder, Qualixar
+Varun Pratap Bhardwaj ([@varun369](https://github.com/varun369)) — Solution Architect & Original Creator
+- ORCID: 0009-0002-8726-4289
 
 ## Contributors
 

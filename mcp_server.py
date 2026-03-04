@@ -650,7 +650,7 @@ async def remember(
     """
     Save content to SuperLocalMemory with intelligent indexing.
 
-    This calls the SAME backend as /superlocalmemoryv2:remember skill.
+    This calls the SAME backend as /superlocalmemoryv2-remember skill.
     All memories are stored in the same local SQLite database.
 
     Args:

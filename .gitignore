@@ -45,6 +45,10 @@ add_attribution.py
 /*.jpg
 /*.jpeg
 
+# ==== GENERATED BIN SCRIPTS (installed by install.ps1/install.sh to ~/.claude-memory/bin/) ====
+bin/*
+!bin/slm-npm
+
 # ==== BUILD ARTIFACTS ====
 build/
 dist/
