@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+/**
+ * SuperLocalMemory V2 - CLI Wrapper
+ * Delegates all commands to the Python backend.
+ */
+
+const { spawnSync } = require('child_process');
+const path = require('path');
+const os = require('os');
+
+const MEMORY_DIR = process.env.SL_MEMORY_PATH || path.join(os.homedir(), '.claude-memory');
+const PYTHON = process.env.SLM_PYTHON || 'python';
+const args = process.argv.slice(2);
+
+if (args.length === 0 || args[0] === 'help' || args[0] === '--help') {
+    console.log('SuperLocalMemory V2 CLI');
+    console.log('');
+    console.log('Usage: slm <command> [args]');
+    console.log('');
+    console.log('Commands:');
+    console.log('  remember <text>              Save a memory');
+    console.log('  recall <query>               Search memories');
+    console.log('  status                       Show database stats');
+    console.log('  list [limit]                 List recent memories');
+    console.log('  get <id>                     Get memory by ID');
+    console.log('  delete <id>                  Delete memory by ID');
+    console.log('  lifecycle-status             Show lifecycle state distribution');
+    console.log('  help                         Show this help');
+    process.exit(0);
+}
+
+const command = args[0];
+
+// Map slm commands to memory_store_v2.py CLI commands
+const commandMap = {
+    'remember':         ['add', ...args.slice(1)],
+    'recall':           ['search', ...args.slice(1)],
+    'status':           ['stats'],
+    'list':             ['list', ...args.slice(1)],
+    'get':              ['get', ...args.slice(1)],
+    'delete':           ['delete', ...args.slice(1)],
+    'lifecycle-status': ['stats'],
+    'recent':           ['recent', ...args.slice(1)],
+};
+
+const mappedArgs = commandMap[command];
+if (!mappedArgs) {
+    console.error(`Unknown command: ${command}`);
+    console.error('Run "slm help" for available commands.');
+    process.exit(1);
+}
+
+const scriptPath = path.join(MEMORY_DIR, 'memory_store_v2.py');
+const env = {
+    ...process.env,
+    PYTHONPATH: MEMORY_DIR,
+    PYTHONUTF8: '1',
+};
+
+const result = spawnSync(PYTHON, [scriptPath, ...mappedArgs], {
+    stdio: 'inherit',
+    env,
+});
+
+process.exit(result.status || 0);
