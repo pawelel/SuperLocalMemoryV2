@@ -21,6 +21,7 @@ Usage:
     # Run as HTTP MCP server (for remote access)
     python3 mcp_server.py --transport http --port 8001
 """
+
 from mcp.server.fastmcp import FastMCP, Context
 from mcp.types import ToolAnnotations
 import sys
@@ -32,10 +33,13 @@ import threading
 from pathlib import Path
 from typing import Optional, Dict, List, Any
 
-# Add src directory to path (use existing code!)
+# Modules are always in ~/.claude-memory (default install location)
+_default_modules_dir = Path.home() / ".claude-memory"
+sys.path.insert(0, str(_default_modules_dir))
+
+# Data directory: SL_MEMORY_PATH overrides where the database lives
 _sl_memory_path = os.environ.get("SL_MEMORY_PATH")
-MEMORY_DIR = Path(_sl_memory_path) if _sl_memory_path else Path.home() / ".claude-memory"
-sys.path.insert(0, str(MEMORY_DIR))
+MEMORY_DIR = Path(_sl_memory_path) if _sl_memory_path else _default_modules_dir
 
 # Import existing core modules (zero duplicate logic)
 try:
@@ -44,13 +48,17 @@ try:
     from pattern_learner import PatternLearner
 except ImportError as e:
     print(f"Error: Could not import SuperLocalMemory modules: {e}", file=sys.stderr)
-    print(f"Ensure SuperLocalMemory V2 is installed at {MEMORY_DIR}", file=sys.stderr)
+    print(
+        f"Ensure SuperLocalMemory V2 is installed at {_default_modules_dir}",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 # Agent Registry + Provenance (v2.5+)
 try:
     from agent_registry import AgentRegistry
     from provenance_tracker import ProvenanceTracker
+
     PROVENANCE_AVAILABLE = True
 except ImportError:
     PROVENANCE_AVAILABLE = False
@@ -58,6 +66,7 @@ except ImportError:
 # Trust Scorer (v2.6 — enforcement)
 try:
     from trust_scorer import TrustScorer
+
     TRUST_AVAILABLE = True
 except ImportError:
     TRUST_AVAILABLE = False
@@ -65,8 +74,15 @@ except ImportError:
 # Learning System (v2.7+)
 try:
     sys.path.insert(0, str(Path(__file__).parent / "src"))
-    from learning import get_learning_db, get_adaptive_ranker, get_feedback_collector, get_engagement_tracker, get_status as get_learning_status
+    from learning import (
+        get_learning_db,
+        get_adaptive_ranker,
+        get_feedback_collector,
+        get_engagement_tracker,
+        get_status as get_learning_status,
+    )
     from learning import FULL_LEARNING_AVAILABLE, ML_RANKING_AVAILABLE
+
     LEARNING_AVAILABLE = True
 except ImportError:
     LEARNING_AVAILABLE = False
@@ -108,6 +124,7 @@ def _maybe_bootstrap():
             return
 
         from learning.synthetic_bootstrap import SyntheticBootstrapper
+
         bootstrapper = SyntheticBootstrapper(memory_db_path=DB_PATH)
 
         if not bootstrapper.should_bootstrap():
@@ -121,9 +138,10 @@ def _maybe_bootstrap():
                 result = bootstrapper.bootstrap_model()
                 if result:
                     import logging
+
                     logging.getLogger("superlocalmemory.mcp").info(
                         "Synthetic bootstrap complete: %d samples",
-                        result.get('training_samples', 0)
+                        result.get("training_samples", 0),
                     )
             except Exception:
                 pass  # Bootstrap failure is never critical
@@ -139,16 +157,17 @@ def _sanitize_error(error: Exception) -> str:
     """Strip internal paths and structure from error messages."""
     msg = str(error)
     # Strip file paths containing claude-memory
-    msg = re.sub(r'/[\w./-]*claude-memory[\w./-]*', '[internal-path]', msg)
+    msg = re.sub(r"/[\w./-]*claude-memory[\w./-]*", "[internal-path]", msg)
     # Strip file paths containing SuperLocalMemory
-    msg = re.sub(r'/[\w./-]*SuperLocalMemory[\w./-]*', '[internal-path]', msg)
+    msg = re.sub(r"/[\w./-]*SuperLocalMemory[\w./-]*", "[internal-path]", msg)
     # Strip SQLite table names from error messages
-    msg = re.sub(r'table\s+\w+', 'table [redacted]', msg)
+    msg = re.sub(r"table\s+\w+", "table [redacted]", msg)
     return msg
 
 
 # Parse command line arguments early (needed for port in constructor)
 import argparse as _argparse
+
 _parser = _argparse.ArgumentParser(add_help=False)
 _parser.add_argument("--transport", default="stdio")
 _parser.add_argument("--port", type=int, default=8417)
@@ -242,10 +261,10 @@ def get_learning_components():
     if not LEARNING_AVAILABLE:
         return None
     return {
-        'db': get_learning_db(),
-        'ranker': get_adaptive_ranker(),
-        'feedback': get_feedback_collector(),
-        'engagement': get_engagement_tracker(),
+        "db": get_learning_db(),
+        "ranker": get_adaptive_ranker(),
+        "feedback": get_feedback_collector(),
+        "engagement": get_engagement_tracker(),
     }
 
 
@@ -259,13 +278,13 @@ def _get_client_name(ctx: Optional[Context] = None) -> str:
     if ctx:
         try:
             # Primary: session.client_params.clientInfo.name (from initialize handshake)
-            session = getattr(ctx, 'session', None)
+            session = getattr(ctx, "session", None)
             if session:
-                params = getattr(session, 'client_params', None)
+                params = getattr(session, "client_params", None)
                 if params:
-                    client_info = getattr(params, 'clientInfo', None)
+                    client_info = getattr(params, "clientInfo", None)
                     if client_info:
-                        name = getattr(client_info, 'name', None)
+                        name = getattr(client_info, "name", None)
                         if name:
                             return str(name)
         except Exception:
@@ -319,6 +338,7 @@ def _register_mcp_agent(agent_name: str = "mcp-client", ctx: Optional[Context] =
 #
 # Research: Hu et al. 2008 (implicit feedback), BPR Rendle 2009 (pairwise)
 # ============================================================================
+
 
 class _RecallBuffer:
     """Thread-safe buffer tracking recent recall operations for signal inference.
@@ -390,42 +410,50 @@ class _RecallBuffer:
                 # Signal: Quick re-query with different query = negative
                 if time_gap < 30.0 and query != prev["query"]:
                     for mid in prev["result_ids"][:5]:  # Top 5 only
-                        signals.append({
-                            "memory_id": mid,
-                            "signal_type": "implicit_negative_requick",
-                            "query": prev["query"],
-                            "rank_position": prev["result_ids"].index(mid) + 1,
-                        })
+                        signals.append(
+                            {
+                                "memory_id": mid,
+                                "signal_type": "implicit_negative_requick",
+                                "query": prev["query"],
+                                "rank_position": prev["result_ids"].index(mid) + 1,
+                            }
+                        )
 
                 # Signal: Long pause = positive for previous results
                 elif time_gap > self._positive_threshold:
                     for mid in prev["result_ids"][:3]:  # Top 3 only
-                        signals.append({
-                            "memory_id": mid,
-                            "signal_type": "implicit_positive_timegap",
-                            "query": prev["query"],
-                            "rank_position": prev["result_ids"].index(mid) + 1,
-                        })
+                        signals.append(
+                            {
+                                "memory_id": mid,
+                                "signal_type": "implicit_positive_timegap",
+                                "query": prev["query"],
+                                "rank_position": prev["result_ids"].index(mid) + 1,
+                            }
+                        )
 
                 # Signal: Same memory re-accessed = positive
                 overlap = result_id_set & prev["result_id_set"]
                 for mid in overlap:
-                    signals.append({
-                        "memory_id": mid,
-                        "signal_type": "implicit_positive_reaccess",
-                        "query": query,
-                    })
+                    signals.append(
+                        {
+                            "memory_id": mid,
+                            "signal_type": "implicit_positive_reaccess",
+                            "query": query,
+                        }
+                    )
 
             # --- Compare with previous recall from DIFFERENT agent (cross-tool) ---
             global_prev = self._global_last
             if global_prev and global_prev["agent_id"] != agent_id:
                 cross_overlap = result_id_set & global_prev["result_id_set"]
                 for mid in cross_overlap:
-                    signals.append({
-                        "memory_id": mid,
-                        "signal_type": "implicit_positive_cross_tool",
-                        "query": query,
-                    })
+                    signals.append(
+                        {
+                            "memory_id": mid,
+                            "signal_type": "implicit_positive_cross_tool",
+                            "query": query,
+                        }
+                    )
 
             # Update buffers
             self._last_recall[agent_id] = current
@@ -433,7 +461,9 @@ class _RecallBuffer:
 
         return signals
 
-    def check_post_action(self, memory_id: int, action: str) -> Optional[Dict[str, Any]]:
+    def check_post_action(
+        self, memory_id: int, action: str
+    ) -> Optional[Dict[str, Any]]:
         """Check if a memory action (update/delete) follows a recent recall.
 
         Returns signal dict if the memory was in recent results, else None.
@@ -465,8 +495,7 @@ class _RecallBuffer:
 
             # Clean old timestamps (older than 60s)
             self._signal_timestamps[agent_id] = [
-                ts for ts in self._signal_timestamps[agent_id]
-                if now - ts < 60.0
+                ts for ts in self._signal_timestamps[agent_id] if now - ts < 60.0
             ]
 
             if len(self._signal_timestamps[agent_id]) >= max_per_minute:
@@ -495,7 +524,9 @@ class _RecallBuffer:
 _recall_buffer = _RecallBuffer()
 
 
-def _emit_implicit_signals(signals: List[Dict[str, Any]], agent_id: str = "mcp-client") -> int:
+def _emit_implicit_signals(
+    signals: List[Dict[str, Any]], agent_id: str = "mcp-client"
+) -> int:
     """Emit inferred implicit signals to the feedback collector.
 
     Rate-limited: max 5 signals per agent per minute.
@@ -549,6 +580,7 @@ def _maybe_passive_decay() -> None:
                 count = feedback.compute_passive_decay(threshold=5)
                 if count > 0:
                     import logging
+
                     logging.getLogger("superlocalmemory.mcp").info(
                         "Passive decay: %d signals emitted", count
                     )
@@ -565,6 +597,7 @@ def _maybe_passive_decay() -> None:
 # Eager initialization — ensure schema migration runs at startup (v2.8)
 # ============================================================================
 
+
 def _eager_init():
     """Initialize all engines at startup. Ensures schema migration runs."""
     try:
@@ -573,19 +606,23 @@ def _eager_init():
         pass  # Don't block server startup
     try:
         from lifecycle.lifecycle_engine import LifecycleEngine
+
         LifecycleEngine()  # Triggers _ensure_columns()
     except Exception:
         pass
     try:
         from behavioral.outcome_tracker import OutcomeTracker
+
         OutcomeTracker(str(MEMORY_DIR / "learning.db"))
     except Exception:
         pass
     try:
         from compliance.audit_db import AuditDB
+
         AuditDB(str(MEMORY_DIR / "audit.db"))
     except Exception:
         pass
+
 
 # Run once at module load
 _eager_init()
@@ -595,11 +632,14 @@ _eager_init()
 # MCP TOOLS (Functions callable by AI)
 # ============================================================================
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=False,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=False,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def remember(
     content: str,
     tags: str = "",
@@ -642,7 +682,7 @@ async def remember(
                 return {
                     "success": False,
                     "error": "Agent trust score too low for write operations",
-                    "message": "Trust enforcement blocked this operation"
+                    "message": "Trust enforcement blocked this operation",
                 }
         except Exception:
             pass  # Trust check failure should not block operations
@@ -655,14 +695,16 @@ async def remember(
             content=content,
             tags=tags.split(",") if tags else None,
             project_name=project or None,
-            importance=importance
+            importance=importance,
         )
 
         # Record provenance (v2.5 — who created this memory)
         prov = get_provenance_tracker()
         if prov:
             try:
-                prov.record_provenance(memory_id, created_by="mcp:client", source_protocol="mcp")
+                prov.record_provenance(
+                    memory_id, created_by="mcp:client", source_protocol="mcp"
+                )
             except Exception:
                 pass
 
@@ -681,22 +723,24 @@ async def remember(
             "success": True,
             "memory_id": memory_id,
             "message": f"Memory saved with ID {memory_id}",
-            "content_preview": preview
+            "content_preview": preview,
         }
 
     except Exception as e:
         return {
             "success": False,
             "error": _sanitize_error(e),
-            "message": "Failed to save memory"
+            "message": "Failed to save memory",
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def recall(
     query: str,
     limit: int = 10,
@@ -753,10 +797,11 @@ async def recall(
         store = get_store()
 
         # Hybrid search (opt-in via env var, v2.6)
-        _use_hybrid = os.environ.get('SLM_HYBRID_SEARCH', 'false').lower() == 'true'
+        _use_hybrid = os.environ.get("SLM_HYBRID_SEARCH", "false").lower() == "true"
         if _use_hybrid:
             try:
                 from hybrid_search import HybridSearchEngine
+
                 engine = HybridSearchEngine(store=store)
                 results = engine.search(query, limit=limit)
             except (ImportError, Exception):
@@ -782,16 +827,18 @@ async def recall(
             try:
                 feedback = get_feedback_collector()
                 if feedback:
-                    feedback.record_recall_results(query, [r.get('id') for r in results if r.get('id')])
+                    feedback.record_recall_results(
+                        query, [r.get("id") for r in results if r.get("id")]
+                    )
                 tracker = get_engagement_tracker()
                 if tracker:
-                    tracker.record_activity('recall_performed', source='mcp')
+                    tracker.record_activity("recall_performed", source="mcp")
             except Exception:
                 pass  # Tracking failure must never break recall
 
         # v2.7.4: Implicit signal inference from recall patterns
         try:
-            result_ids = [r.get('id') for r in results if r.get('id')]
+            result_ids = [r.get("id") for r in results if r.get("id")]
             signals = _recall_buffer.record_recall(query, result_ids)
             if signals:
                 _emit_implicit_signals(signals)
@@ -801,17 +848,14 @@ async def recall(
             pass  # Signal inference must NEVER break recall
 
         # Filter by minimum score
-        filtered_results = [
-            r for r in results
-            if r.get('score', 0) >= min_score
-        ]
+        filtered_results = [r for r in results if r.get("score", 0) >= min_score]
 
         return {
             "success": True,
             "query": query,
             "results": filtered_results,
             "count": len(filtered_results),
-            "total_searched": len(results)
+            "total_searched": len(results),
         }
 
     except Exception as e:
@@ -820,15 +864,17 @@ async def recall(
             "error": _sanitize_error(e),
             "message": "Failed to search memories",
             "results": [],
-            "count": 0
+            "count": 0,
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def list_recent(limit: int = 10) -> dict:
     """
     List most recent memories.
@@ -849,11 +895,7 @@ async def list_recent(limit: int = 10) -> dict:
         # Call existing list_all method
         memories = store.list_all(limit=limit)
 
-        return {
-            "success": True,
-            "memories": memories,
-            "count": len(memories)
-        }
+        return {"success": True, "memories": memories, "count": len(memories)}
 
     except Exception as e:
         return {
@@ -861,15 +903,17 @@ async def list_recent(limit: int = 10) -> dict:
             "error": _sanitize_error(e),
             "message": "Failed to list memories",
             "memories": [],
-            "count": 0
+            "count": 0,
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def get_status() -> dict:
     """
     Get SuperLocalMemory system status and statistics.
@@ -889,24 +933,23 @@ async def get_status() -> dict:
         # Call existing get_stats method
         stats = store.get_stats()
 
-        return {
-            "success": True,
-            **stats
-        }
+        return {"success": True, **stats}
 
     except Exception as e:
         return {
             "success": False,
             "error": _sanitize_error(e),
-            "message": "Failed to get status"
+            "message": "Failed to get status",
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=False,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=False,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def build_graph() -> dict:
     """
     Build or rebuild the knowledge graph from existing memories.
@@ -932,22 +975,24 @@ async def build_graph() -> dict:
         return {
             "success": True,
             "message": "Knowledge graph built successfully",
-            **stats
+            **stats,
         }
 
     except Exception as e:
         return {
             "success": False,
             "error": _sanitize_error(e),
-            "message": "Failed to build graph"
+            "message": "Failed to build graph",
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=False,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=False,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def switch_profile(name: str) -> dict:
     """
     Switch to a different memory profile.
@@ -970,52 +1015,65 @@ async def switch_profile(name: str) -> dict:
         # Import profile manager (uses column-based profiles)
         sys.path.insert(0, str(MEMORY_DIR))
         from importlib import import_module
+
         # Use direct JSON config update for speed
         import json
+
         config_file = MEMORY_DIR / "profiles.json"
 
         if config_file.exists():
-            with open(config_file, 'r') as f:
+            with open(config_file, "r") as f:
                 config = json.load(f)
         else:
-            config = {'profiles': {'default': {'name': 'default', 'description': 'Default memory profile'}}, 'active_profile': 'default'}
-
-        if name not in config.get('profiles', {}):
-            available = ', '.join(config.get('profiles', {}).keys())
-            return {
-                "success": False,
-                "message": f"Profile '{name}' not found. Available: {available}"
+            config = {
+                "profiles": {
+                    "default": {
+                        "name": "default",
+                        "description": "Default memory profile",
+                    }
+                },
+                "active_profile": "default",
             }
 
-        old_profile = config.get('active_profile', 'default')
-        config['active_profile'] = name
+        if name not in config.get("profiles", {}):
+            available = ", ".join(config.get("profiles", {}).keys())
+            return {
+                "success": False,
+                "message": f"Profile '{name}' not found. Available: {available}",
+            }
+
+        old_profile = config.get("active_profile", "default")
+        config["active_profile"] = name
 
         from datetime import datetime
-        config['profiles'][name]['last_used'] = datetime.now().isoformat()
 
-        with open(config_file, 'w') as f:
+        config["profiles"][name]["last_used"] = datetime.now().isoformat()
+
+        with open(config_file, "w") as f:
             json.dump(config, f, indent=2)
 
         return {
             "success": True,
             "profile": name,
             "previous_profile": old_profile,
-            "message": f"Switched to profile '{name}'. Memory operations now use this profile."
+            "message": f"Switched to profile '{name}'. Memory operations now use this profile.",
         }
 
     except Exception as e:
         return {
             "success": False,
             "error": _sanitize_error(e),
-            "message": "Failed to switch profile"
+            "message": "Failed to switch profile",
         }
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def backup_status() -> dict:
     """
     Get auto-backup system status for SuperLocalMemory.
@@ -1035,24 +1093,22 @@ async def backup_status() -> dict:
     """
     try:
         from auto_backup import AutoBackup
+
         backup = AutoBackup()
         status = backup.get_status()
-        return {
-            "success": True,
-            **status
-        }
+        return {"success": True, **status}
     except ImportError:
         return {
             "success": False,
             "message": "Auto-backup module not installed. Update SuperLocalMemory to v2.4.0+.",
             "enabled": False,
-            "backup_count": 0
+            "backup_count": 0,
         }
     except Exception as e:
         return {
             "success": False,
             "error": _sanitize_error(e),
-            "message": "Failed to get backup status"
+            "message": "Failed to get backup status",
         }
 
 
@@ -1060,15 +1116,16 @@ async def backup_status() -> dict:
 # LEARNING TOOLS (v2.7 — feedback, transparency, user control)
 # ============================================================================
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=False,
-    destructiveHint=False,
-    openWorldHint=True,
-))
+
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=False,
+        destructiveHint=False,
+        openWorldHint=True,
+    )
+)
 async def memory_used(
-    memory_id: int,
-    query: str = "",
-    usefulness: str = "high"
+    memory_id: int, query: str = "", usefulness: str = "high"
 ) -> dict:
     """
     Call this tool whenever you use information from a recalled memory in
@@ -1090,7 +1147,10 @@ async def memory_used(
     """
     try:
         if not LEARNING_AVAILABLE:
-            return {"success": False, "message": "Learning features not available. Install: pip3 install lightgbm scipy"}
+            return {
+                "success": False,
+                "message": "Learning features not available. Install: pip3 install lightgbm scipy",
+            }
 
         feedback = get_feedback_collector()
         if feedback is None:
@@ -1105,20 +1165,21 @@ async def memory_used(
 
         return {
             "success": True,
-            "message": f"Feedback recorded for memory #{memory_id} (usefulness: {usefulness})"
+            "message": f"Feedback recorded for memory #{memory_id} (usefulness: {usefulness})",
         }
     except Exception as e:
         return {"success": False, "error": _sanitize_error(e)}
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def get_learned_patterns(
-    min_confidence: float = 0.6,
-    category: str = "all"
+    min_confidence: float = 0.6, category: str = "all"
 ) -> dict:
     """
     See what SuperLocalMemory has learned about your preferences,
@@ -1141,11 +1202,19 @@ async def get_learned_patterns(
     """
     try:
         if not LEARNING_AVAILABLE:
-            return {"success": False, "message": "Learning features not available. Install: pip3 install lightgbm scipy", "patterns": {}}
+            return {
+                "success": False,
+                "message": "Learning features not available. Install: pip3 install lightgbm scipy",
+                "patterns": {},
+            }
 
         ldb = get_learning_db()
         if ldb is None:
-            return {"success": False, "message": "Learning database not initialized", "patterns": {}}
+            return {
+                "success": False,
+                "message": "Learning database not initialized",
+                "patterns": {},
+            }
 
         result = {"success": True, "patterns": {}}
 
@@ -1193,15 +1262,15 @@ async def get_learned_patterns(
         return {"success": False, "error": _sanitize_error(e), "patterns": {}}
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=False,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=False,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def correct_pattern(
-    pattern_id: int,
-    correct_value: str,
-    reason: str = ""
+    pattern_id: int, correct_value: str, reason: str = ""
 ) -> dict:
     """
     Correct a learned pattern that is wrong. Use get_learned_patterns first
@@ -1227,22 +1296,26 @@ async def correct_pattern(
         conn = ldb._get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM transferable_patterns WHERE id = ?', (pattern_id,))
+            cursor.execute(
+                "SELECT * FROM transferable_patterns WHERE id = ?", (pattern_id,)
+            )
             pattern = cursor.fetchone()
             if not pattern:
                 return {"success": False, "message": f"Pattern #{pattern_id} not found"}
 
-            old_value = pattern['value']
+            old_value = pattern["value"]
 
             # Update the pattern with correction
             ldb.upsert_transferable_pattern(
-                pattern_type=pattern['pattern_type'],
-                key=pattern['key'],
+                pattern_type=pattern["pattern_type"],
+                key=pattern["key"],
                 value=correct_value,
                 confidence=1.0,  # User correction = maximum confidence
-                evidence_count=pattern['evidence_count'] + 1,
-                profiles_seen=pattern['profiles_seen'],
-                contradictions=[f"Corrected from '{old_value}' to '{correct_value}': {reason}"],
+                evidence_count=pattern["evidence_count"] + 1,
+                profiles_seen=pattern["profiles_seen"],
+                contradictions=[
+                    f"Corrected from '{old_value}' to '{correct_value}': {reason}"
+                ],
             )
 
             # Record as negative feedback for the old value
@@ -1257,7 +1330,7 @@ async def correct_pattern(
 
             return {
                 "success": True,
-                "message": f"Pattern '{pattern['key']}' corrected: '{old_value}' → '{correct_value}'"
+                "message": f"Pattern '{pattern['key']}' corrected: '{old_value}' → '{correct_value}'",
             }
         finally:
             conn.close()
@@ -1272,11 +1345,14 @@ async def correct_pattern(
 # Ref: https://platform.openai.com/docs/mcp
 # ============================================================================
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def search(query: str) -> dict:
     """
     Search for documents in SuperLocalMemory.
@@ -1305,18 +1381,24 @@ async def search(query: str) -> dict:
 
         results = []
         for r in raw_results:
-            if r.get('score', 0) < 0.2:
+            if r.get("score", 0) < 0.2:
                 continue
-            content = r.get('content', '') or r.get('summary', '') or ''
+            content = r.get("content", "") or r.get("summary", "") or ""
             snippet = content[:200] + "..." if len(content) > 200 else content
-            mem_id = str(r.get('id', ''))
-            title = r.get('category', 'Memory') + ': ' + (content[:60].replace('\n', ' ') if content else 'Untitled')
-            results.append({
-                "id": mem_id,
-                "title": title,
-                "text": snippet,
-                "url": f"memory://local/{mem_id}"
-            })
+            mem_id = str(r.get("id", ""))
+            title = (
+                r.get("category", "Memory")
+                + ": "
+                + (content[:60].replace("\n", " ") if content else "Untitled")
+            )
+            results.append(
+                {
+                    "id": mem_id,
+                    "title": title,
+                    "text": snippet,
+                    "url": f"memory://local/{mem_id}",
+                }
+            )
 
         return {"results": results}
 
@@ -1324,11 +1406,13 @@ async def search(query: str) -> dict:
         return {"results": [], "error": _sanitize_error(e)}
 
 
-@mcp.tool(annotations=ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    openWorldHint=False,
-))
+@mcp.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=False,
+    )
+)
 async def fetch(id: str) -> dict:
     """
     Retrieve full content of a memory by ID.
@@ -1349,27 +1433,31 @@ async def fetch(id: str) -> dict:
         if not mem:
             raise ValueError(f"Memory with ID {id} not found")
 
-        content = mem.get('content', '') or mem.get('summary', '') or ''
-        title = (mem.get('category', 'Memory') or 'Memory') + ': ' + (content[:60].replace('\n', ' ') if content else 'Untitled')
+        content = mem.get("content", "") or mem.get("summary", "") or ""
+        title = (
+            (mem.get("category", "Memory") or "Memory")
+            + ": "
+            + (content[:60].replace("\n", " ") if content else "Untitled")
+        )
 
         metadata = {}
-        if mem.get('tags'):
-            metadata['tags'] = mem['tags']
-        if mem.get('project_name'):
-            metadata['project'] = mem['project_name']
-        if mem.get('importance'):
-            metadata['importance'] = mem['importance']
-        if mem.get('cluster_id'):
-            metadata['cluster_id'] = mem['cluster_id']
-        if mem.get('created_at'):
-            metadata['created_at'] = mem['created_at']
+        if mem.get("tags"):
+            metadata["tags"] = mem["tags"]
+        if mem.get("project_name"):
+            metadata["project"] = mem["project_name"]
+        if mem.get("importance"):
+            metadata["importance"] = mem["importance"]
+        if mem.get("cluster_id"):
+            metadata["cluster_id"] = mem["cluster_id"]
+        if mem.get("created_at"):
+            metadata["created_at"] = mem["created_at"]
 
         return {
             "id": str(id),
             "title": title,
             "text": content,
             "url": f"memory://local/{id}",
-            "metadata": metadata if metadata else None
+            "metadata": metadata if metadata else None,
         }
 
     except Exception as e:
@@ -1402,7 +1490,9 @@ try:
         project: str = None,
     ) -> dict:
         """Record action outcome for behavioral learning. Outcomes: success/failure/partial."""
-        return await _report_outcome(memory_ids, outcome, action_type, context, agent_id, project)
+        return await _report_outcome(
+            memory_ids, outcome, action_type, context, agent_id, project
+        )
 
     @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False))
     async def get_lifecycle_status(memory_id: int = None) -> dict:
@@ -1458,6 +1548,7 @@ except ImportError:
 # MCP RESOURCES (Data endpoints)
 # ============================================================================
 
+
 @mcp.resource("memory://recent/{limit}")
 async def get_recent_memories_resource(limit: str) -> str:
     """
@@ -1498,7 +1589,7 @@ async def get_clusters_resource() -> str:
     try:
         engine = get_graph_engine()
         stats = engine.get_stats()
-        clusters = stats.get('clusters', [])
+        clusters = stats.get("clusters", [])
         return json.dumps(clusters, indent=2)
     except Exception as e:
         return json.dumps({"error": _sanitize_error(e)}, indent=2)
@@ -1528,7 +1619,9 @@ async def get_learning_status_resource() -> str:
     """
     try:
         if not LEARNING_AVAILABLE:
-            return json.dumps({"available": False, "message": "Learning deps not installed"}, indent=2)
+            return json.dumps(
+                {"available": False, "message": "Learning deps not installed"}, indent=2
+            )
         status = get_learning_status()
         return json.dumps(status, indent=2)
     except Exception as e:
@@ -1558,6 +1651,7 @@ async def get_engagement_resource() -> str:
 # MCP PROMPTS (Template injection)
 # ============================================================================
 
+
 @mcp.prompt()
 async def coding_identity_prompt() -> str:
     """
@@ -1574,18 +1668,20 @@ async def coding_identity_prompt() -> str:
             return "# Coding Identity\n\nNo patterns learned yet. Use remember() to save coding decisions and preferences."
 
         prompt = "# Your Coding Identity (Learned from History)\n\n"
-        prompt += "SuperLocalMemory has learned these patterns from your past decisions:\n\n"
+        prompt += (
+            "SuperLocalMemory has learned these patterns from your past decisions:\n\n"
+        )
 
-        if 'frameworks' in patterns:
+        if "frameworks" in patterns:
             prompt += f"**Preferred Frameworks:** {', '.join(patterns['frameworks'])}\n"
 
-        if 'style' in patterns:
+        if "style" in patterns:
             prompt += f"**Coding Style:** {', '.join(patterns['style'])}\n"
 
-        if 'testing' in patterns:
+        if "testing" in patterns:
             prompt += f"**Testing Approach:** {', '.join(patterns['testing'])}\n"
 
-        if 'api_style' in patterns:
+        if "api_style" in patterns:
             prompt += f"**API Style:** {', '.join(patterns['api_style'])}\n"
 
         prompt += "\n*Use this context to provide personalized suggestions aligned with established preferences.*"
@@ -1621,7 +1717,7 @@ async def project_context_prompt(project_name: str) -> str:
 
         for i, mem in enumerate(memories[:10], 1):
             prompt += f"{i}. {mem['content'][:150]}\n"
-            if mem.get('tags'):
+            if mem.get("tags"):
                 prompt += f"   Tags: {', '.join(mem['tags'])}\n"
             prompt += "\n"
 
@@ -1649,13 +1745,10 @@ if __name__ == "__main__":
         "--transport",
         choices=["stdio", "http", "sse", "streamable-http"],
         default="stdio",
-        help="Transport method: stdio for local IDEs (default), sse/streamable-http for ChatGPT and remote access"
+        help="Transport method: stdio for local IDEs (default), sse/streamable-http for ChatGPT and remote access",
     )
     parser.add_argument(
-        "--port",
-        type=int,
-        default=8417,
-        help="Port for HTTP transport (default 8417)"
+        "--port", type=int, default=8417, help="Port for HTTP transport (default 8417)"
     )
 
     args = parser.parse_args()
@@ -1688,16 +1781,43 @@ if __name__ == "__main__":
     print("  - switch_profile(name)   [Project/Profile switch]", file=sys.stderr)
     print("  - backup_status()        [Auto-Backup]", file=sys.stderr)
     if LEARNING_AVAILABLE:
-        print("  - memory_used(memory_id, query, usefulness)  [v2.7 Learning]", file=sys.stderr)
-        print("  - get_learned_patterns(min_confidence, category) [v2.7 Learning]", file=sys.stderr)
-        print("  - correct_pattern(pattern_id, correct_value) [v2.7 Learning]", file=sys.stderr)
+        print(
+            "  - memory_used(memory_id, query, usefulness)  [v2.7 Learning]",
+            file=sys.stderr,
+        )
+        print(
+            "  - get_learned_patterns(min_confidence, category) [v2.7 Learning]",
+            file=sys.stderr,
+        )
+        print(
+            "  - correct_pattern(pattern_id, correct_value) [v2.7 Learning]",
+            file=sys.stderr,
+        )
     if V28_AVAILABLE:
-        print("  - report_outcome(memory_ids, outcome)         [v2.8 Behavioral]", file=sys.stderr)
-        print("  - get_lifecycle_status(memory_id)              [v2.8 Lifecycle]", file=sys.stderr)
-        print("  - set_retention_policy(name, framework, days)  [v2.8 Compliance]", file=sys.stderr)
-        print("  - compact_memories(dry_run)                    [v2.8 Lifecycle]", file=sys.stderr)
-        print("  - get_behavioral_patterns(min_confidence)      [v2.8 Behavioral]", file=sys.stderr)
-        print("  - audit_trail(event_type, verify_chain)        [v2.8 Compliance]", file=sys.stderr)
+        print(
+            "  - report_outcome(memory_ids, outcome)         [v2.8 Behavioral]",
+            file=sys.stderr,
+        )
+        print(
+            "  - get_lifecycle_status(memory_id)              [v2.8 Lifecycle]",
+            file=sys.stderr,
+        )
+        print(
+            "  - set_retention_policy(name, framework, days)  [v2.8 Compliance]",
+            file=sys.stderr,
+        )
+        print(
+            "  - compact_memories(dry_run)                    [v2.8 Lifecycle]",
+            file=sys.stderr,
+        )
+        print(
+            "  - get_behavioral_patterns(min_confidence)      [v2.8 Behavioral]",
+            file=sys.stderr,
+        )
+        print(
+            "  - audit_trail(event_type, verify_chain)        [v2.8 Compliance]",
+            file=sys.stderr,
+        )
     print("", file=sys.stderr)
     print("MCP Resources Available:", file=sys.stderr)
     print("  - memory://recent/{limit}", file=sys.stderr)
@@ -1722,12 +1842,23 @@ if __name__ == "__main__":
         mcp.run(transport="stdio")
     elif args.transport == "streamable-http":
         # Streamable HTTP transport (recommended for ChatGPT 2026+)
-        print(f"Streamable HTTP server at http://localhost:{args.port}", file=sys.stderr)
-        print("ChatGPT setup: expose via ngrok, paste URL in Settings > Connectors", file=sys.stderr)
+        print(
+            f"Streamable HTTP server at http://localhost:{args.port}", file=sys.stderr
+        )
+        print(
+            "ChatGPT setup: expose via ngrok, paste URL in Settings > Connectors",
+            file=sys.stderr,
+        )
         mcp.run(transport="streamable-http")
     else:
         # SSE transport for remote access (ChatGPT, web clients)
         # "http" is accepted as alias for "sse"
-        print(f"HTTP/SSE server will be available at http://localhost:{args.port}", file=sys.stderr)
-        print("ChatGPT setup: expose via ngrok, paste URL in Settings > Connectors", file=sys.stderr)
+        print(
+            f"HTTP/SSE server will be available at http://localhost:{args.port}",
+            file=sys.stderr,
+        )
+        print(
+            "ChatGPT setup: expose via ngrok, paste URL in Settings > Connectors",
+            file=sys.stderr,
+        )
         mcp.run(transport="sse")
