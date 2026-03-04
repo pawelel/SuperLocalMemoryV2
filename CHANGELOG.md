@@ -19,19 +19,17 @@ SuperLocalMemory V2 - Intelligent local memory system for AI coding assistants.
 ## [2.8.3] - 2026-03-05
 
 ### Fixed
-- Windows installation now works correctly (PowerShell and npm)
-- Database connection stability improvements across all operations
-- Python 3.14 and 3.16 forward compatibility
+- Windows installation and cross-platform compatibility
+- Database stability under concurrent usage
+- Forward compatibility with latest Python versions
 
 ### Added
-- Security headers for web dashboard
-- PowerShell equivalents for all operational scripts
-- New `slm attribution` command to view creator and license information
+- Full Windows support with PowerShell scripts for all operations
+- `slm attribution` command for license and creator information
 
 ### Improved
-- Modular code organization for better maintainability
-- Dependency version bounds for reproducible installs
-- Test suite expanded to 340 tests
+- Overall reliability and code quality
+- Dependency management for reproducible installs
 
 ---
 
