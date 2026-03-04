@@ -1105,7 +1105,8 @@ class MemoryStoreV2:
 
         # Qualixar platform provenance (non-breaking additions)
         attribution['platform'] = 'Qualixar'
-        attribution['verify_url'] = 'https://qualixar.com'
+        attribution['website'] = 'https://superlocalmemory.com'
+        attribution['author_website'] = 'https://varunpratap.com'
 
         return attribution
 
@@ -1136,7 +1137,16 @@ class MemoryStoreV2:
             output.append(entry)
             char_count += len(entry)
 
-        return ''.join(output)
+        text = ''.join(output)
+
+        # Layer 3: Steganographic watermark on text exports
+        try:
+            from qualixar_watermark import encode_watermark
+            text = encode_watermark(text, "slm")
+        except ImportError:
+            pass
+
+        return text
 
 
 # CLI interface (V1 compatible + V2 extensions)

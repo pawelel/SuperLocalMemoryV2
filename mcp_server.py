@@ -61,6 +61,26 @@ try:
 except ImportError:
     TRUST_AVAILABLE = False
 
+# Qualixar Attribution (v2.8.3 — 3-layer provenance)
+try:
+    from qualixar_attribution import QualixarSigner
+    from qualixar_watermark import encode_watermark
+    _signer = QualixarSigner("superlocalmemory", "2.8.3")
+    ATTRIBUTION_AVAILABLE = True
+except ImportError:
+    _signer = None
+    ATTRIBUTION_AVAILABLE = False
+
+
+def _sign_response(response: dict) -> dict:
+    """Apply Layer 2 cryptographic signing to MCP tool responses."""
+    if _signer and isinstance(response, dict):
+        try:
+            return _signer.sign(response)
+        except Exception:
+            pass
+    return response
+
 # Learning System (v2.7+)
 try:
     sys.path.insert(0, str(Path(__file__).parent / "src"))
@@ -676,12 +696,12 @@ async def remember(
         # Format response
         preview = content[:100] + "..." if len(content) > 100 else content
 
-        return {
+        return _sign_response({
             "success": True,
             "memory_id": memory_id,
             "message": f"Memory saved with ID {memory_id}",
             "content_preview": preview
-        }
+        })
 
     except Exception as e:
         return {
@@ -805,13 +825,13 @@ async def recall(
             if r.get('score', 0) >= min_score
         ]
 
-        return {
+        return _sign_response({
             "success": True,
             "query": query,
             "results": filtered_results,
             "count": len(filtered_results),
             "total_searched": len(results)
-        }
+        })
 
     except Exception as e:
         return {
@@ -888,10 +908,10 @@ async def get_status() -> dict:
         # Call existing get_stats method
         stats = store.get_stats()
 
-        return {
+        return _sign_response({
             "success": True,
             **stats
-        }
+        })
 
     except Exception as e:
         return {
@@ -1636,6 +1656,54 @@ async def project_context_prompt(project_name: str) -> str:
 # ============================================================================
 # SERVER STARTUP
 # ============================================================================
+
+@mcp.tool(annotations=ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    openWorldHint=False,
+))
+async def get_attribution() -> dict:
+    """
+    Get creator attribution and provenance verification for SuperLocalMemory.
+
+    Returns creator information, license details, and verification status
+    for the 3-layer Qualixar attribution system.
+
+    Returns:
+        {
+            "creator": str,
+            "license": str,
+            "platform": str,
+            "layers": {
+                "visible": bool,
+                "cryptographic": bool,
+                "steganographic": bool
+            }
+        }
+    """
+    try:
+        store = get_store()
+        attribution = store.get_attribution()
+
+        return _sign_response({
+            "success": True,
+            **attribution,
+            "website": "https://superlocalmemory.com",
+            "author_website": "https://varunpratap.com",
+            "attribution_layers": {
+                "layer1_visible": True,
+                "layer2_cryptographic": ATTRIBUTION_AVAILABLE,
+                "layer3_steganographic": ATTRIBUTION_AVAILABLE,
+            },
+        })
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": _sanitize_error(e),
+            "message": "Failed to get attribution"
+        }
+
 
 if __name__ == "__main__":
     import argparse

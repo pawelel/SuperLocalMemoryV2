@@ -310,6 +310,38 @@ except Exception as e:
 "
         ;;
 
+    attribution)
+        python3 -c "
+import sys
+sys.path.insert(0, '${SLM_DIR}')
+try:
+    from memory_store_v2 import MemoryStoreV2
+    store = MemoryStoreV2()
+    attr = store.get_attribution()
+    print('SuperLocalMemory — Attribution')
+    print('=' * 45)
+    print(f\"Creator:  {attr.get('creator_name', 'Varun Pratap Bhardwaj')}\")
+    print(f\"Role:     {attr.get('creator_role', 'Solution Architect')}\")
+    print(f\"Platform: {attr.get('platform', 'Qualixar')}\")
+    print(f\"License:  {attr.get('license', 'MIT')}\")
+    print(f\"Website:  {attr.get('website', 'https://superlocalmemory.com')}\")
+    print(f\"Author:   {attr.get('author_website', 'https://varunpratap.com')}\")
+    print('=' * 45)
+    try:
+        from qualixar_attribution import QualixarSigner
+        from qualixar_watermark import encode_watermark
+        print('Layer 1 (Visible):        Active')
+        print('Layer 2 (Cryptographic):  Active')
+        print('Layer 3 (Steganographic): Active')
+    except ImportError:
+        print('Layer 1 (Visible):        Active')
+        print('Layer 2 (Cryptographic):  Not available')
+        print('Layer 3 (Steganographic): Not available')
+except Exception as e:
+    print(f'Error: {e}')
+"
+        ;;
+
     help|--help|-h)
         cat <<EOF
 SuperLocalMemory V2 - Universal CLI
@@ -355,6 +387,9 @@ WEB DASHBOARD:
 HTTP SERVER (MCP):
   slm serve [PORT]         Start MCP HTTP server (default port 8417)
                            For ChatGPT/remote: ngrok http PORT
+
+ATTRIBUTION:
+  slm attribution          Show creator attribution and provenance status
 
 ADVANCED:
   slm reset soft           Soft reset (clear memories)
