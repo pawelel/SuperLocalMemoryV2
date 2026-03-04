@@ -334,7 +334,7 @@ function Configure-McpTool {
     )
 
     if (-not (Test-Path $TemplatePath)) {
-        Write-Host "  WARNING: Template not found for $ToolName — skipping" -ForegroundColor Yellow
+        Write-Host "  WARNING: Template not found for $ToolName -- skipping" -ForegroundColor Yellow
         return
     }
 

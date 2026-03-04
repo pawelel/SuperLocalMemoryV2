@@ -65,9 +65,14 @@ console.log('  • Set up CLI commands\n');
 let result;
 
 if (os.platform() === 'win32') {
-    // Windows: Run PowerShell script
+    // Windows: Run PowerShell script (prefer pwsh/PS7+, fallback to powershell/PS5.1)
     console.log('Platform: Windows (PowerShell)\n');
-    result = spawnSync('powershell', [
+    const psExe = (() => {
+        const { spawnSync: probe } = require('child_process');
+        const test = probe('pwsh', ['-Command', 'exit 0'], { stdio: 'ignore' });
+        return (test.error || test.status !== 0) ? 'powershell' : 'pwsh';
+    })();
+    result = spawnSync(psExe, [
         '-ExecutionPolicy', 'Bypass',
         '-File', installScript,
         '--non-interactive'
